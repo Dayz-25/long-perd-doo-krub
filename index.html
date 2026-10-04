@@ -40,19 +40,18 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 }
 .seal{position:absolute;left:50%;top:58%;width:76px;height:76px;margin:-38px 0 0 -38px;z-index:5;padding:0;border-radius:50%;background:var(--seal);color:#fff;box-shadow:0 4px 12px #0006;display:grid;place-items:center;touch-action:none;transition:opacity .4s}
 .env.open .seal{opacity:0;pointer-events:none}
-.ring{position:absolute;inset:-8px;transform:rotate(-90deg)}
+.fingerprint{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ring{position:absolute;inset:-8px;width:calc(100% + 16px);height:calc(100% + 16px);display:block}
 .ring circle{fill:none;stroke:var(--glow);stroke-width:4;stroke-dasharray:263.9;stroke-dashoffset:263.9;stroke-linecap:round}
 .seal.hold{transform:scale(.94)}
 
 /* slideshow */
-.letter{width:min(92vw,440px);max-height:calc(var(--viewport-height) - 32px);display:flex;flex-direction:column;background:var(--paper);color:var(--ink);padding:14px 14px 18px;border-radius:6px;box-shadow:0 20px 50px #0009;animation:rise .8s ease}
+.letter{width:min(92vw,440px,calc(var(--viewport-height)*.68));height:min(calc(var(--viewport-height) - 32px),680px);min-height:0;display:flex;flex-direction:column;background:var(--paper);color:var(--ink);padding:14px 14px 18px;border-radius:6px;box-shadow:0 20px 50px #0009;animation:rise .8s ease}
 @keyframes rise{from{transform:translateY(40px) rotate(-1.5deg);opacity:0}}
 .photo{position:relative;flex:1 1 auto;min-height:0;aspect-ratio:4/5;background:linear-gradient(160deg,var(--photo1),var(--photo2));border-radius:3px;overflow:hidden;display:grid;place-items:center;color:#fff;font-size:3rem}
 .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .6s}
 .cap{flex:none;margin-top:12px;min-height:1.6em;font-size:1rem}
-.nav{flex:none;display:flex;align-items:center;justify-content:space-between;margin-top:8px}
-.nav button{padding:6px 16px;background:var(--paper2);font-size:1.2rem}
-.nav button.off{visibility:hidden}
+.nav{flex:none;display:flex;align-items:center;justify-content:center;margin-top:8px}
 .go{flex:none;margin-top:14px;padding:10px 36px}
 .dots{display:flex;gap:6px}.dots i{width:7px;height:7px;border-radius:50%;background:var(--dot)}.dots i.on{background:var(--seal)}
 
@@ -85,22 +84,55 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 }
 .card-gif{display:block;width:min(44vw,190px);max-height:22vh;object-fit:contain;margin:0 auto 10px}
 .card .row{display:flex;align-items:center;justify-content:center;min-height:52px;margin-top:12px}
-.count{font-size:.95rem;opacity:.65}
 .fade{animation:in .8s ease}@keyframes in{from{opacity:0;transform:scale(.9)}}
-.q{font-size:1.5rem;line-height:1.7;max-width:420px}
+.q{font-size:clamp(1rem,4.5vw,1.5rem);line-height:1.55;max-width:420px}
 .q1-gif{width:min(48vw,220px);max-height:34vh;object-fit:contain;margin-bottom:12px}
-.no-gif{width:110px;max-width:70vw;max-height:35vh;object-fit:contain;margin-bottom:12px}
 .answer-row{display:flex;align-items:center;justify-content:center;gap:14px;width:min(92vw,680px);margin:22px auto 16px}
 .answer-input{display:flex;flex:1;min-width:0;flex-direction:column;align-items:center;gap:12px}
+.answer-actions{display:flex;justify-content:center;gap:12px}
+.answer-actions .skip{background:var(--paper2)}
 .answer-row textarea{width:100%;height:clamp(100px,24vh,180px);margin:0;padding:14px;border-radius:10px;border:0;font:inherit;font-size:1rem;color:var(--ink);background:var(--paper);resize:none}
 .answer-gif{width:min(34vw,260px);max-height:40vh;object-fit:contain}
 .thanks{font-size:1.3rem;line-height:1.8}
+.yes-image{display:block;width:min(80vw,420px);max-height:calc(var(--viewport-height)*.65);object-fit:contain;margin:0 auto 12px}
+.final-gif{display:block;width:min(48vw,220px);max-height:20vh;object-fit:contain;margin:0 auto 12px}
+.no-gif{display:block;width:180px;height:auto;object-fit:contain;margin:14px auto 0;transition:width .3s ease}
+.love-field{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.love{position:absolute;left:var(--x);top:var(--y);color:#ffd1e4;font-size:var(--size);font-weight:600;white-space:nowrap;opacity:var(--opacity);text-shadow:0 0 12px #ff78ad88;animation:love-drift var(--duration) ease-in-out var(--delay) infinite alternate}
+.love-horizontal,.love-vertical{display:block}
+.love-horizontal{animation:love-horizontal 7s ease-in-out var(--delay) infinite alternate}
+.love-vertical{animation:love-vertical 5s ease-in-out var(--reverse-delay) infinite alternate}
+@keyframes love-drift{from{translate:0 0}to{translate:0 -22px}}
+@keyframes love-horizontal{from{rotate:-12deg}to{rotate:12deg}}
+@keyframes love-vertical{from{scale:.85}to{scale:1.15}}
+.flower-garden{position:fixed;left:0;right:0;bottom:env(safe-area-inset-bottom,0px);height:clamp(130px,22vh,190px);overflow:hidden;pointer-events:none;z-index:1}
+#done>:not(.flower-garden){position:relative;z-index:2}
+.garden-bouquet{position:absolute;left:50%;bottom:0;width:min(100vw,760px);height:100%;transform:translateX(-50%)}
+.garden-flower{position:absolute;left:var(--x);bottom:4px;width:34px;height:var(--height);transform:translateX(-50%) rotate(var(--lean));transform-origin:50% 100%;z-index:var(--layer,1)}
+.garden-flower .stem{position:absolute;left:50%;bottom:0;width:4px;height:calc(100% - 25px);border-radius:4px;background:linear-gradient(90deg,#28553b,#a4d77f 48%,#397b50);transform:translateX(-50%) scaleY(0);transform-origin:50% 100%;animation:stem-grow 1.3s cubic-bezier(.2,.75,.25,1) var(--delay) both}
+.garden-flower .stem::before,.garden-flower .stem::after{content:"";position:absolute;width:19px;height:10px;background:linear-gradient(135deg,#a4d77f,#4c925c);border-radius:100% 0 100% 0;opacity:0;animation:leaf-grow .45s ease-out calc(var(--delay) + .65s) both}
+.garden-flower .stem::before{left:-16px;top:48%;transform:rotate(18deg) scale(0);transform-origin:right center}
+.garden-flower .stem::after{right:-16px;top:68%;transform:scaleX(-1) rotate(18deg) scale(0);transform-origin:left center}
+.garden-flower .bloom{display:block;position:absolute;left:50%;top:0;z-index:1;width:42px;height:42px;opacity:0;transform:translateX(-50%) scale(0);filter:drop-shadow(0 2px 3px #0005);animation:bloom-open .55s cubic-bezier(.18,.75,.3,1.35) calc(var(--delay) + .8s) both}
+.garden-flower .bloom::before{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,#ffe88a 0 9%,#f4a623 10% 16%,transparent 17%),repeating-conic-gradient(from 2deg,var(--petal-a) 0deg 12deg,var(--petal-b) 13deg 19deg,transparent 20deg 25deg);mask:radial-gradient(circle,#000 0 75%,transparent 77%)}
+.garden-flower.pink{--petal-a:#ff75a8;--petal-b:#ffd0e1}
+.garden-flower.red{--petal-a:#ed315f;--petal-b:#ff9caa}
+.garden-flower.purple{--petal-a:#9673f5;--petal-b:#d9c7ff}
+.garden-flower.blue{--petal-a:#25aeea;--petal-b:#b6edff}
+.garden-flower.yellow{--petal-a:#ffb72f;--petal-b:#ffe59a}
+.garden-flower.orange{--petal-a:#fa7942;--petal-b:#ffd09b}
+.garden-flower.pink .bloom::before{background:radial-gradient(circle,#fff2a5 0 8%,#f59d33 9% 15%,transparent 16%),repeating-conic-gradient(from 2deg,var(--petal-a) 0deg 12deg,var(--petal-b) 13deg 19deg,transparent 20deg 25deg)}
+@keyframes stem-grow{to{transform:translateX(-50%) scaleY(1)}}
+@keyframes leaf-grow{to{opacity:1}}
+@keyframes bloom-open{to{opacity:1;transform:translateX(-50%) scale(1)}}
+@media(max-width:420px){.garden-flower .bloom{width:36px;height:36px}.garden-flower{width:30px}}
+@media(prefers-reduced-motion:reduce){.garden-flower .stem,.garden-flower .stem::before,.garden-flower .stem::after,.garden-flower .bloom{animation:none;opacity:1}.garden-flower .stem{transform:translateX(-50%) scaleY(1)}.garden-flower .stem::before,.garden-flower .stem::after{transform:scale(1)}.garden-flower .bloom{transform:translateX(-50%) scale(1)}}
 
 /* ปุ่ม Yes / No */
-.yn{display:flex;gap:18px;justify-content:center;align-items:center;margin-top:24px}
-.yn button{transition:transform .3s}
+.yn{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;align-items:center;min-height:100px;margin-top:24px}
+.yn button{transition:transform .3s,font-size .3s,padding .3s}
 .yn .no{background:var(--paper2)}
-#m-no .q{color:var(--ink)}
+.no-message{margin-top:16px;min-height:1.5em;font-size:clamp(1rem,4vw,1.3rem)}
 
 /* ดอกไม้ร่วง */
 .petals{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:15}
@@ -128,22 +160,24 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 .flower::after{content:"";position:absolute;left:37%;top:37%;width:26%;height:26%;
   border-radius:50%;background:radial-gradient(circle,#ffe27a,#f0b429)}
 
-#mute{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:12px;z-index:30;padding:6px 16px;font-size:.85rem;background:#ffffff26;color:var(--paper);backdrop-filter:blur(4px)}
+#mute{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:12px;z-index:30;width:42px;height:42px;padding:0;display:grid;place-items:center;background:#ffffff26;color:var(--paper);backdrop-filter:blur(4px)}
+#mute svg{width:22px;height:22px;fill:currentColor}
 /* พลุ (CSS ล้วน) */
 #fx{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:16}
 .burst{position:absolute;width:0;height:0}
 .burst i{position:absolute;left:-3px;top:-3px;width:6px;height:6px;border-radius:50%;background:var(--c);
   box-shadow:0 0 8px 2px var(--c);animation:spark 1.4s cubic-bezier(.1,.7,.3,1) forwards}
 @keyframes spark{
-  from{transform:rotate(var(--a)) translateX(0) scale(1);opacity:1}
+  from{transform:translate(0,0) scale(1);opacity:1}
   70%{opacity:1}
-  to{transform:rotate(var(--a)) translateX(var(--d)) translateY(30px) scale(.2);opacity:0}
+  to{transform:translate(var(--x),var(--y)) scale(.2);opacity:0}
 }
 .burst b{position:absolute;left:-5px;top:-5px;width:10px;height:10px;border-radius:50%;background:#fff;
   box-shadow:0 0 30px 14px var(--c);animation:flash .5s ease-out forwards}
 @keyframes flash{from{opacity:1;transform:scale(.4)}to{opacity:0;transform:scale(2.2)}}
 
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.petals,#fx{display:none}}
+@media(prefers-reduced-motion:reduce){.love-field{display:none}}
 @media(max-height:540px){
   .screen{padding:10px}
   .letter{padding:8px}
@@ -160,7 +194,9 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 <div class="petals" id="petals" aria-hidden="true"></div>
 <div id="fx" aria-hidden="true"></div>
 <audio id="bgm" loop preload="auto"></audio>
-<button id="mute" hidden aria-label="เปิดหรือปิดเสียงเพลง">ปิดเสียง</button>
+<button id="mute" hidden aria-label="ควบคุมเพลง" aria-pressed="false">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3v12.5a3.5 3.5 0 1 1-2-3.16V7.4l-8 1.8v8.3a3.5 3.5 0 1 1-2-3.16V7.6L19 5.3V3z"/></svg>
+</button>
 
 <!-- 1 ซองจดหมาย -->
 <section class="screen on" id="s-env">
@@ -169,7 +205,16 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
     <div class="flap"></div>
     <div class="front"></div>
     <button class="seal" id="seal" aria-label="กดค้างไว้ 3 วินาทีเพื่อเปิดจดหมาย">
-      <svg class="ring" viewBox="0 0 96 96"><circle id="ringc" cx="48" cy="48" r="42"/></svg>
+      <svg class="fingerprint" viewBox="0 0 32 32" aria-hidden="true">
+        <path d="M9 12a7 7 0 0 1 14 0v3"/>
+        <path d="M6.5 12a9.5 9.5 0 0 1 19 0v5"/>
+        <path d="M12 12a4 4 0 0 1 8 0v8"/>
+        <path d="M16 12v8"/>
+        <path d="M9 17v1a14 14 0 0 0 2 7"/>
+        <path d="M23 20a14 14 0 0 1-2 6"/>
+        <path d="M13.5 21a10 10 0 0 0 2 4"/>
+      </svg>
+      <svg class="ring" viewBox="0 0 96 96"><circle id="ringc" cx="48" cy="48" r="42" transform="rotate(-90 48 48)"/></svg>
     </button>
     <img class="env-cat" id="envCat" src="gif/Cat%20Meow%20Sticker.gif" alt="" hidden>
   </div>
@@ -181,9 +226,7 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
     <div class="photo" id="photo"></div>
     <p class="cap" id="cap"></p>
     <div class="nav">
-      <button id="prev" class="off" aria-label="ก่อนหน้า" tabindex="-1">‹</button>
       <div class="dots" id="dots"></div>
-      <button id="next" class="off" aria-label="ถัดไป" tabindex="-1">›</button>
     </div>
     <button id="goCard" class="go" hidden>Next</button>
   </div>
@@ -199,13 +242,14 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 <div class="modal" id="m-card">
   <div class="card">
     <img class="card-gif" id="cardGif" src="gif/Cat%20Love%20Sticker%20by%20ACHTUNG.gif" alt="" hidden>
-    <p>ตั้งแต่วันแรกที่เราได้รู้จักกันจนถึงวันนี้ ผมรู้สึกดีมากๆ ที่ได้รู้จักพี่นะ</p>
-    <p>ขอบคุณสำหรับวันนั้นที่พี่ทักมา และขอบคุณที่พี่กล้าที่จะเข้ามาทำความรู้จักกับผม ถ้าวันนั้นพี่ไม่ได้ทักมา ผมก็คงไม่รู้เลยว่าเราจะได้มารู้จักกัน แล้วกลายมาเป็นคนที่ผมรู้สึกดีด้วยมากขนาดนี้</p>
-    <p>ตั้งแต่มีพี่เข้ามา ผมรู้สึกว่าทุกๆ วันมันมีอะไรให้รอคอยมากขึ้น ผมรอที่จะได้คุยกับพี่ รอที่จะได้เล่าเรื่องต่างๆ ให้พี่ฟัง หรือแม้แต่เรื่องเล็กๆ ในแต่ละวัน แค่ได้คุยกันก็ทำให้วันธรรมดาๆ ของผมไม่น่าเบื่อเลย</p>
-    <p>ผมรู้สึกว่าเราเข้ากันได้ดีในหลายๆ เรื่อง ทั้งนิสัย ความคิด และทัศนคติบางอย่าง ถึงเราจะไม่ได้เหมือนกันไปทุกเรื่อง แต่ผมกลับรู้สึกว่าความต่างของเรามันเป็นอะไรที่น่ารักดี และทำให้ผมอยากรู้จักพี่มากขึ้นเรื่อยๆ</p>
-    <p>จากตอนแรกที่ผมแค่รู้สึกดีที่ได้คุยกับพี่ มันค่อยๆ กลายเป็นความรู้สึกที่มากขึ้นโดยที่ผมไม่ทันได้รู้ตัว จนตอนนี้ผมรู้แล้วว่าพี่เป็นคนที่ผมอยากมีอยู่ในชีวิตจริงๆ</p>
-    <p>ผมอยากบอกความรู้สึกของผมให้พี่รู้</p>
-    <div class="row"><span class="count" id="c1"></span><button id="b1" hidden>Next</button></div>
+    <p>อยากขอบคุณพี่ที่ทักมาในวันนั้น ขอบคุณที่ชวนผมคุย โดยที่ไม่เคยทำให้ผมรู้สึกอึดอัดเลย จนทำให้เราได้คุยกัน ได้รู้จักกัน และค่อยๆ กลายมาเป็นคนคุยกันแบบในวันนี้</p>
+
+<p>ผมดีใจมากๆ นะครับที่ได้รู้จักพี่ ตั้งแต่วันนั้นจนถึงวันนี้ ผมรู้สึกว่าเราเข้ากันได้ในหลายๆ อย่าง ไม่ว่าจะเป็นนิสัย ความคิด ทัศนคติ หรือมุมมองในการใช้ชีวิต บางอย่างเราอาจจะคิดเหมือนกัน แต่บางอย่างก็อาจจะต่างกัน แต่ความต่างเหล่านั้นไม่เคยทำให้ผมรู้สึกว่าเราไปด้วยกันไม่ได้เลย กลับรู้สึกว่ามันเป็นความต่างที่น่ารักดี เพราะมันทำให้ผมได้เห็นอีกมุมหนึ่งที่ผมอาจไม่เคยมอง และยิ่งทำให้ผมอยากรู้จักพี่มากขึ้นเรื่อยๆ</p>
+
+<p>ตั้งแต่มีพี่เข้ามา ผมรู้สึกว่าทุกๆ วันมีอะไรให้รอคอยมากขึ้น ผมรอที่จะได้คุยกับพี่ รอที่จะได้เล่าเรื่องต่างๆ ให้พี่ฟัง หรือแม้แต่เรื่องเล็กๆ ในแต่ละวัน แค่ได้คุยกันก็ทำให้วันธรรมดาๆ ของผมไม่น่าเบื่อเลย</p>
+
+<p>ผมชอบเวลาที่ได้คุยกับพี่ ชอบเวลาที่ได้รู้จักพี่ในแต่ละมุมมากขึ้น และผมก็อยากเป็นคนที่ได้อยู่รับฟังเรื่องราวต่างๆ ของพี่ต่อไป ไม่ว่าจะเป็นเรื่องดีๆ เรื่องที่เหนื่อย หรือเรื่องเล็กๆ น้อยๆ ในแต่ละวันเท่าที่พี่อยากจะเล่า</p>
+    <div class="row"><button id="b1" hidden>Next</button></div>
   </div>
 </div>
 
@@ -218,11 +262,19 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 <!-- 5 คำถาม + ช่องตอบ -->
 <section class="screen" id="s-q2">
   <div id="form">
-    <p class="q fade">ตั้งแต่วันแรกที่รู้จักกันจนถึงวันนี้<br>พี่รู้สึกแบบไหนหรอครับ</p>
+    <p class="q fade">
+      ตั้งแต่วันแรกที่เราได้รู้จักกันจนถึงวันนี้<br>
+      พี่รู้สึกยังไงบ้างครับ<br>
+      ความรู้สึกที่พี่มีต่อผมมันดีขึ้นเรื่อยๆ หรือมีอะไรเปลี่ยนไปบ้างไหมครับ<br>
+      แล้วมีอะไรที่พี่อยากบอกผมไหมครับ?
+    </p>
     <div class="answer-row">
       <div class="answer-input">
         <textarea id="ans" placeholder="พิมพ์คำตอบตรงนี้ได้เลย" aria-label="คำตอบ"></textarea>
-        <button id="send">Send</button>
+        <div class="answer-actions">
+          <button id="send">Send</button>
+          <button id="skip" class="skip" type="button">Skip</button>
+        </div>
       </div>
       <img class="answer-gif" id="answerGif" src="gif/Valentines%20Day%20Cat%20Sticker.gif" alt="" hidden>
     </div>
@@ -234,35 +286,62 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
     <img class="q1-gif" id="loveIntroGif" src="gif/Myaowl%20Sticker1.gif" alt="" hidden>
     <p class="q fade" id="loveIntro">มีอีกคำถามครับ</p>
     <div id="loveAsk" hidden>
-      <img class="q1-gif" id="coupleGif" src="gif/Couple%20Love%20Sticke1.gif" alt="" hidden>
-      <p class="q fade">สนใจมาเป็นแฟนกันไหมครับ<br>ขยับจากคนคุยมาเป็นแฟนกันไหมครับ ?</p>
-      <div class="yn">
-        <button id="yes">Yes</button>
-        <button id="no" class="no">No</button>
+      <div id="lovePrompt">
+        <img class="q1-gif" id="coupleGif" src="gif/Couple%20Love%20Sticke1.gif" alt="" hidden>
+        <p class="q fade">สนใจมาเป็นแฟนกันไหมครับ<br>ขยับจากคนคุยมาเป็นแฟนกันไหมครับ ?</p>
+        <div class="yn">
+          <button id="yes">Yes</button>
+          <button id="no" class="no">No</button>
+        </div>
+        <p class="no-message" id="noMsg" aria-live="polite" hidden></p>
+        <img class="no-gif" id="noGif" src="gif/Sad%20Cat%20Sticker%20by%20MYAOWL.gif" alt="แมวกำลังเศร้า" hidden>
+      </div>
+      <div id="done" hidden>
+        <div class="love-field" id="loveField" aria-hidden="true"></div>
+        <img class="yes-image" id="yesImage" src="img/yes.png" alt="รูปหลังจากตอบ Yes" hidden>
+        <img class="final-gif" id="finalGif" src="gif/giphy.gif" alt="" hidden>
+        <p class="thanks fade">ยินดีที่ได้รู้จักนะครับ<br>คุณแฟน</p>
+        <!-- ปิดสวนดอกไม้ชั่วคราว
+        <div class="flower-garden" aria-hidden="true">
+          <div class="garden-bouquet">
+            <span class="garden-flower pink" style="--x:2.5%;--height:34%;--lean:-18deg;--delay:.1s;--layer:1"><i class="stem"></i><i class="bloom"></i></span>
+            <span class="garden-flower red" style="--x:7.5%;--height:39%;--lean:12deg;--delay:.25s;--layer:2"><i class="stem"></i><i class="bloom"></i></span>
+            <span class="garden-flower purple" style="--x:12.5%;--height:32%;--lean:-14deg;--delay:.4s;--layer:3"><i class="stem"></i><i class="bloom"></i></span>
+            <span class="garden-flower yellow" style="--x:17.5%;--height:38%;--lean:16deg;--delay:.55s;--layer:4"><i class="stem"></i><i class="bloom"></i></span>
+            <span class="garden-flower blue" style="--x:22.5%;--height:33%;--lean:-10deg;--delay:.7s;--layer:5"><i class="stem"></i><i class="bloom"></i></span>
+            <span class="garden-flower orange" style="--x:27.5%;--height:40%;--lean:12deg;--delay:.85s;--layer:6"><i class="stem"></i><i class="bloom"></i></span>
+            <span class="garden-flower pink" style="--x:32.5%;--height:35%;--lean:-12deg;--delay:1s;--layer:7"><i class="stem"></i><i class="bloom"></i></span>
+            <span class="garden-flower purple" style="--x:37.5%;--height:41%;--lean:15deg;--delay:1.15s;--layer:8"><i class="stem"></i><i class="bloom"></i></span>
+            <span class="garden-flower blue" style="--x:42.5%;--height:34%;--lean:-16deg;--delay:1.3s;--layer:9"><i class="stem"></i><i class="bloom"></i></span>
+            <span class="garden-flower red" style="--x:47.5%;--height:39%;--lean:12deg;--delay:1.45s;--layer:10"><i class="stem"></i><i class="bloom"></i></span>
+            <span class="garden-flower yellow" style="--x:52.5%;--height:34%;--lean:-13deg;--delay:1.6s;--layer:11"><i class="stem"></i><i class="bloom"></i></span>
+            <span class="garden-flower orange" style="--x:57.5%;--height:41%;--lean:17deg;--delay:1.75s;--layer:12"><i class="stem"></i><i class="bloom"></i></span>
+            <span class="garden-flower pink" style="--x:62.5%;--height:35%;--lean:-18deg;--delay:1.9s;--layer:13"><i class="stem"></i><i class="bloom"></i></span>
+            <span class="garden-flower red" style="--x:67.5%;--height:40%;--lean:12deg;--delay:2.05s;--layer:14"><i class="stem"></i><i class="bloom"></i></span>
+            <span class="garden-flower purple" style="--x:72.5%;--height:33%;--lean:-14deg;--delay:2.2s;--layer:15"><i class="stem"></i><i class="bloom"></i></span>
+            <span class="garden-flower yellow" style="--x:77.5%;--height:39%;--lean:16deg;--delay:2.35s;--layer:16"><i class="stem"></i><i class="bloom"></i></span>
+            <span class="garden-flower blue" style="--x:82.5%;--height:34%;--lean:-10deg;--delay:2.5s;--layer:17"><i class="stem"></i><i class="bloom"></i></span>
+            <span class="garden-flower orange" style="--x:87.5%;--height:41%;--lean:12deg;--delay:2.65s;--layer:18"><i class="stem"></i><i class="bloom"></i></span>
+            <span class="garden-flower pink" style="--x:92.5%;--height:35%;--lean:-12deg;--delay:2.8s;--layer:19"><i class="stem"></i><i class="bloom"></i></span>
+            <span class="garden-flower purple" style="--x:97.5%;--height:40%;--lean:15deg;--delay:2.95s;--layer:20"><i class="stem"></i><i class="bloom"></i></span>
+          </div>
+        </div>
+        -->
       </div>
     </div>
   </div>
-
-  <p class="thanks fade" id="done" hidden>ขอบคุณนะครับ<br>ผมดีใจมากเลย</p>
 </section>
 
-<!-- ป๊อปอัปตอนกด No -->
-<div class="modal" id="m-no">
-  <div class="card" style="text-align:center">
-    <img class="no-gif" id="noGif" src="gif/Sad%20Cat%20Sticker%20by%20MYAOWL.gif" alt="" hidden>
-    <p class="q" id="noMsg" style="font-size:1.3rem"></p>
-    <div class="yn">
-      <button id="yes2">Yes</button>
-      <button id="no2" class="no">No</button>
-    </div>
-  </div>
-</div>
-
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
 /* ===== ตั้งค่า ===== */
 const CONFIG = {
-  // 1) สมัคร formspree.io แล้ววาง URL เช่น "https://formspree.io/f/xxxxxxx"
-  ENDPOINT: "",
+  // ตั้งค่า Service ID, Template ID และ Public Key จาก EmailJS
+  // เชื่อม Gmail someday.everday25@gmail.com แล้วตั้ง From/To เป็นอีเมลนี้ใน Template
+  // Template ใช้ {{name}}, {{time}}, {{message}}, {{email}} และ {{title}}
+  EMAILJS_SERVICE_ID: "service_rau7pyj",
+  EMAILJS_TEMPLATE_ID: "template_j18baki",
+  EMAILJS_PUBLIC_KEY: "bL8pcyntApCwbVgB0",
   HOLD_MS: 3000,      // กดค้างเปิดซอง
   PRE_CARD_MS: 5000,  // แสดง GIF ก่อนการ์ดข้อความ
   CARD_MS: 5000,      // รอก่อนปุ่ม Next ของการ์ด
@@ -294,24 +373,41 @@ function revealImage(img){
   'q1Gif',
   'loveIntroGif',
   'coupleGif',
-  'noGif',
   'answerGif',
-  'cardGif'
+  'cardGif',
+  'yesImage',
+  'finalGif'
 ].forEach(id => revealImage($(id)));
 
 /* ===== กดค้างเปิดซอง ===== */
 const seal = $('seal'), ringc = $('ringc'), C = 263.9;
-let raf = 0, t0 = 0, opened = false;
+let raf = 0, t0 = 0, opened = false, holdPointer = null;
 function tick(now){
   const p = Math.min((now - t0) / CONFIG.HOLD_MS, 1);
   ringc.style.strokeDashoffset = C * (1 - p);
   if (p >= 1) return openEnv();
   raf = requestAnimationFrame(tick);
 }
-function startHold(e){ e.preventDefault(); if (opened) return; seal.classList.add('hold'); t0 = performance.now(); raf = requestAnimationFrame(tick); }
-function endHold(){ if (opened) return; cancelAnimationFrame(raf); seal.classList.remove('hold'); ringc.style.strokeDashoffset = C; }
+function startHold(e){
+  e.preventDefault();
+  if (opened || holdPointer !== null || !e.isPrimary) return;
+  holdPointer = e.pointerId;
+  seal.setPointerCapture(e.pointerId);
+  seal.classList.add('hold');
+  t0 = performance.now();
+  raf = requestAnimationFrame(tick);
+}
+function endHold(e){
+  if (holdPointer !== e.pointerId) return;
+  holdPointer = null;
+  if (seal.hasPointerCapture(e.pointerId)) seal.releasePointerCapture(e.pointerId);
+  if (opened) return;
+  cancelAnimationFrame(raf);
+  seal.classList.remove('hold');
+  ringc.style.strokeDashoffset = C;
+}
 seal.addEventListener('pointerdown', startHold);
-['pointerup','pointerleave','pointercancel'].forEach(ev => seal.addEventListener(ev, endHold));
+['pointerup','pointercancel'].forEach(ev => seal.addEventListener(ev, endHold));
 seal.addEventListener('contextmenu', e => e.preventDefault());
 function openEnv(){
   opened = true; $('env').classList.add('open');
@@ -342,7 +438,7 @@ function startMusic(){
 }
 $('mute').onclick = () => {
   bgm.muted = !bgm.muted;
-  $('mute').textContent = bgm.muted ? 'เปิดเสียง' : 'ปิดเสียง';
+  $('mute').setAttribute('aria-pressed', String(bgm.muted));
 };
 
 /* ===== ดอกไม้ร่วง ===== */
@@ -390,49 +486,51 @@ document.querySelectorAll('.sg').forEach((img, i) => {
 });
 
 /* ===== สไลด์ ===== */
-let idx = 0, timer = 0, arrows = false;   // arrows = ปุ่ม < > จะโผล่เมื่อถึงรูปสุดท้าย
+let idx = 0, timer = 0, direction = 1;
 const dots = $('dots');
 PHOTOS.forEach(() => dots.appendChild(document.createElement('i')));
 function render(){
   const [src, cap] = PHOTOS[idx];
   const box = $('photo');
-  box.innerHTML = '<span>' + (idx + 1) + '</span>';
-  const img = new Image(); img.alt = cap || 'รูปที่ ' + (idx + 1);
-  img.onload = () => { box.innerHTML = ''; box.appendChild(img); };
+  const img = new Image(); img.alt = cap || 'ภาพสไลด์';
+  img.onerror = () => img.remove();
   img.src = src;
+  box.replaceChildren(img);
   $('cap').textContent = cap || '';
   [...dots.children].forEach((d, i) => d.classList.toggle('on', i === idx));
 }
-function go(n){
-  const last = PHOTOS.length - 1;
-  idx = n > last ? 0 : n < 0 ? last : n;   // วนรอบได้ทั้งสองทาง
+function updateSlide(){
   render();
-  if (idx === last){
-    const b = $('goCard'); if (b.hidden){ b.hidden = false; b.classList.add('fade'); }
-    if (!arrows){ arrows = true; ['prev','next'].forEach(i => { const a = $(i); a.classList.remove('off'); a.classList.add('fade'); a.tabIndex = 0; }); }
+  if (idx === PHOTOS.length - 1 && $('goCard').hidden){
+    $('goCard').hidden = false;
+    $('goCard').classList.add('fade');
   }
-  restart();
 }
 function restart(){
   clearInterval(timer);
-  // เล่นอัตโนมัติจนถึงรูปสุดท้าย แล้วหยุดรอให้กด Next
-  if (idx < PHOTOS.length - 1) timer = setInterval(() => go(idx + 1), CONFIG.SLIDE_MS);
+  if (PHOTOS.length > 1) timer = setInterval(() => {
+    const next = idx + direction;
+    if (next < 0 || next >= PHOTOS.length) direction *= -1;
+    idx += direction;
+    updateSlide();
+  }, CONFIG.SLIDE_MS);
 }
-function startSlides(){ go(0); }
+function moveSlide(step){
+  const previous = idx;
+  idx = (idx + step + PHOTOS.length) % PHOTOS.length;
+  direction = step > 0 ? 1 : -1;
+  if (idx !== previous) updateSlide();
+  restart();
+}
+function startSlides(){ idx = 0; direction = 1; updateSlide(); restart(); }
 $('goCard').onclick = () => { clearInterval(timer); showCard(); };
-$('prev').onclick = () => go(idx - 1);
-$('next').onclick = () => go(idx + 1);
 let sx = 0;
 $('s-slide').addEventListener('touchstart', e => sx = e.touches[0].clientX, {passive:true});
-$('s-slide').addEventListener('touchend', e => { const d = e.changedTouches[0].clientX - sx; if (arrows && Math.abs(d) > 50) go(idx + (d < 0 ? 1 : -1)); });
+$('s-slide').addEventListener('touchend', e => { const d = e.changedTouches[0].clientX - sx; if (Math.abs(d) > 50) moveSlide(d < 0 ? 1 : -1); });
 
-/* ===== ตัวนับเวลาก่อนขึ้นปุ่ม Next ของการ์ด ===== */
-function wait(ms, label, btn, done){
-  let left = Math.ceil(ms / 1000); label.textContent = ' ' + left;
-  const t = setInterval(() => {
-    left--; label.textContent = left > 0 ? ' ' + left : '';
-    if (left <= 0){ clearInterval(t); btn.hidden = false; btn.classList.add('fade'); }
-  }, 1000);
+/* ===== รอก่อนขึ้นปุ่ม Next ของการ์ด ===== */
+function wait(ms, btn, done){
+  setTimeout(() => { btn.hidden = false; btn.classList.add('fade'); }, ms);
   btn.onclick = done;
 }
 function showCard(){
@@ -441,33 +539,54 @@ function showCard(){
   setTimeout(() => {
     intro.classList.remove('on');
     $('m-card').classList.add('on');
-    wait(CONFIG.CARD_MS, $('c1'), $('b1'), () => { $('m-card').classList.remove('on'); showQ1(); });
+    wait(CONFIG.CARD_MS, $('b1'), () => { $('m-card').classList.remove('on'); showQ1(); });
   }, CONFIG.PRE_CARD_MS);
 }
 function showQ1(){
   show('s-q1');
   setTimeout(() => show('s-q2'), CONFIG.Q1_MS);   // ขึ้นคำถามเอง ไม่ต้องกด Next
 }
+function continueToLove(){
+  $('form').hidden = true;
+  $('love').hidden = false;
+  setTimeout(() => {
+    $('loveIntro').hidden = true;
+    $('loveIntroGif').hidden = true;
+    $('loveAsk').hidden = false;
+  }, CONFIG.Q3_MS);
+}
+$('skip').onclick = continueToLove;
 /* ===== ส่งคำตอบ ===== */
 $('send').onclick = async () => {
   const answer = $('ans').value.trim();
   if (!answer){ $('err').textContent = 'พิมพ์คำตอบก่อนนะ'; return; }
-  const payload = { answer, time: new Date().toLocaleString('th-TH'), ua: navigator.userAgent };
+  if (!CONFIG.EMAILJS_SERVICE_ID || !CONFIG.EMAILJS_TEMPLATE_ID || !CONFIG.EMAILJS_PUBLIC_KEY){
+    $('err').textContent = 'ยังไม่ได้ตั้งค่า EmailJS กรุณาใส่ Service ID, Template ID และ Public Key ก่อนนะ';
+    return;
+  }
+  if (!window.emailjs){
+    $('err').textContent = 'โหลด EmailJS ไม่สำเร็จ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ตแล้วลองอีกครั้งนะ';
+    return;
+  }
+  const payload = {
+    name: 'คำตอบจากหน้าเว็บ',
+    time: new Date().toLocaleString('th-TH'),
+    message: answer,
+    email: 'someday.everday25@gmail.com',
+    title: 'ได้รับคำตอบจากหน้าเว็บ'
+  };
   try { localStorage.setItem('answer', JSON.stringify(payload)); } catch(e){}
-  $('send').disabled = true; $('err').textContent = '';
+  $('send').disabled = true; $('skip').disabled = true; $('err').textContent = '';
   try {
-    if (CONFIG.ENDPOINT){
-      const r = await fetch(CONFIG.ENDPOINT, { method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'}, body: JSON.stringify(payload) });
-      if (!r.ok) throw new Error(r.status);
-    } else console.log('ANSWER (ยังไม่ได้ตั้ง ENDPOINT):', payload);
-    $('form').hidden = true; $('love').hidden = false;
-    setTimeout(() => {
-      $('loveIntro').hidden = true;
-      $('loveIntroGif').hidden = true;
-      $('loveAsk').hidden = false;
-    }, CONFIG.Q3_MS);
+    await window.emailjs.send(
+      CONFIG.EMAILJS_SERVICE_ID,
+      CONFIG.EMAILJS_TEMPLATE_ID,
+      payload,
+      { publicKey: CONFIG.EMAILJS_PUBLIC_KEY }
+    );
+    continueToLove();
   } catch(e){
-    $('send').disabled = false; $('err').textContent = 'ส่งไม่สำเร็จ ลองกดอีกครั้งนะ';
+    $('send').disabled = false; $('skip').disabled = false; $('err').textContent = 'ส่งอีเมลไม่สำเร็จ กรุณาตรวจสอบการตั้งค่า EmailJS แล้วลองอีกครั้งนะ';
   }
 };
 
@@ -483,18 +602,106 @@ const NO_MSGS = [
   "ปุ่ม No คงเสียแล้วมั้งครับ ลองกด Yes นะ"
 ];
 let noN = 0;
+const noButtonOffsets = new WeakMap();
+function moveNoButton(button){
+  const boundary = button.closest('.screen') || document.documentElement;
+  const rect = button.getBoundingClientRect();
+  const bounds = boundary.getBoundingClientRect();
+  const previous = noButtonOffsets.get(button) || {x:0,y:0};
+  const baseLeft = rect.left - previous.x;
+  const baseTop = rect.top - previous.y;
+  const minX = bounds.left + 16;
+  const maxX = Math.max(minX, bounds.right - button.offsetWidth - 16);
+  const minY = bounds.top + 16;
+  const maxY = Math.max(minY, bounds.bottom - button.offsetHeight - 16);
+  const yesRect = $('yes').getBoundingClientRect();
+  let x = baseLeft, y = baseTop;
+  for (let i = 0; i < 40; i++){
+    const candidateLeft = minX + Math.random() * (maxX - minX);
+    const candidateTop = minY + Math.random() * (maxY - minY);
+    const overlapsYes = candidateLeft < yesRect.right + 8
+      && candidateLeft + button.offsetWidth > yesRect.left - 8
+      && candidateTop < yesRect.bottom + 8
+      && candidateTop + button.offsetHeight > yesRect.top - 8;
+    if (!overlapsYes){
+      x = candidateLeft - baseLeft;
+      y = candidateTop - baseTop;
+      break;
+    }
+  }
+  button.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+  noButtonOffsets.set(button, {x,y});
+}
 function askNo(){
   $('noMsg').textContent = NO_MSGS[noN % NO_MSGS.length];
-  noGif.style.width = Math.min(110 + noN * 28, Math.min(window.innerWidth * 0.7, 360)) + 'px';
-  $('m-no').classList.add('on');
+  $('noMsg').hidden = false;
+  $('noGif').hidden = false;
   noN++;
-  $('yes2').style.transform = 'scale(' + Math.min(1 + noN * 0.1, 1.8) + ')';  // ปุ่ม Yes ใหญ่ขึ้นเรื่อยๆ
+  $('noGif').style.width = Math.min(160 + noN * 80, window.innerWidth * 0.9, 520) + 'px';
+  const scale = Math.min(1 + noN * 0.1, 1.8);
+  $('yes').style.fontSize = (1.05 * scale) + 'rem';
+  $('yes').style.padding = (12 * scale) + 'px ' + (32 * scale) + 'px';
+}
+function createLoveWords(){
+  const field = $('loveField');
+  if (field.childElementCount) return;
+  for (let i = 0; i < 100; i++){
+    const word = document.createElement('span');
+    word.className = 'love';
+    const delay = Math.random() * 10;
+    word.style.setProperty('--x', Math.random() * 92 + '%');
+    word.style.setProperty('--y', Math.random() * 88 + '%');
+    word.style.setProperty('--size', 12 + Math.random() * 12 + 'px');
+    word.style.setProperty('--opacity', 0.2 + Math.random() * 0.45);
+    word.style.setProperty('--duration', 5 + Math.random() * 8 + 's');
+    word.style.setProperty('--delay', '-' + delay + 's');
+    word.style.setProperty('--reverse-delay', '-' + delay * 0.6 + 's');
+    const horizontal = document.createElement('span');
+    horizontal.className = 'love-horizontal';
+    const vertical = document.createElement('span');
+    vertical.className = 'love-vertical';
+    const text = document.createElement('span');
+    text.className = 'love-word';
+    text.textContent = 'I love you';
+    vertical.appendChild(text);
+    horizontal.appendChild(vertical);
+    word.appendChild(horizontal);
+    field.appendChild(word);
+  }
+}
+async function sendYesNotification(){
+  if (!CONFIG.EMAILJS_SERVICE_ID || !CONFIG.EMAILJS_TEMPLATE_ID || !CONFIG.EMAILJS_PUBLIC_KEY){
+    console.error('EmailJS is not configured; the Yes notification was not sent.');
+    return;
+  }
+  if (!window.emailjs){
+    console.error('EmailJS failed to load; the Yes notification was not sent.');
+    return;
+  }
+  const payload = {
+    name: 'คำตอบจากหน้าเว็บ',
+    time: new Date().toLocaleString('th-TH'),
+    message: 'ตอบ Yes ตกลงเป็นแฟน',
+    email: 'someday.everday25@gmail.com',
+    title: 'ได้รับคำตอบ: Yes'
+  };
+  try {
+    await window.emailjs.send(
+      CONFIG.EMAILJS_SERVICE_ID,
+      CONFIG.EMAILJS_TEMPLATE_ID,
+      payload,
+      { publicKey: CONFIG.EMAILJS_PUBLIC_KEY }
+    );
+  } catch(e){
+    console.error('Failed to send the Yes notification email:', e);
+  }
 }
 function sayYes(){
-  $('m-no').classList.remove('on');
-  $('love').hidden = true; $('done').hidden = false;
+  $('lovePrompt').hidden = true; $('done').hidden = false;
+  createLoveWords();
   rain(60);
   celebrate();
+  sendYesNotification();
 }
 
 /* ===== พลุ ===== */
@@ -508,9 +715,12 @@ function firework(){
   const c = FW_COLORS[Math.floor(Math.random() * FW_COLORS.length)];
   b.style.setProperty('--c', c);
   let html = '<b></b>';
-  const n = 22, d = 70 + Math.random() * 60;
+  const n = 36;
   for (let i = 0; i < n; i++){
-    html += '<i style="--a:' + (i * 360 / n) + 'deg;--d:' + (d * (i % 2 ? .65 : 1)) + 'px"></i>';
+    const t = i * 2 * Math.PI / n;
+    const hx = 16 * Math.pow(Math.sin(t), 3);
+    const hy = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+    html += '<i style="--x:' + (hx * 5) + 'px;--y:' + ((hy - 6) * 5) + 'px"></i>';
   }
   b.innerHTML = html;
   fx.appendChild(b);
@@ -521,10 +731,9 @@ function celebrate(){
   for (let i = 0; i < 3; i++) setTimeout(firework, i * 250);
   setInterval(() => { if (!document.hidden) firework(); }, 800);   // พลุยิงต่อเรื่อยๆ
 }
-$('no').onclick = askNo;
-$('no2').onclick = askNo;      // กด No ในป๊อปอัปก็เด้งข้อความถัดไปซ้ำไปเรื่อยๆ
+$('noGif').onerror = () => $('noGif').remove();
+$('no').onclick = () => { askNo(); moveNoButton($('no')); };
 $('yes').onclick = sayYes;
-$('yes2').onclick = sayYes;
 </script>
 </body>
 </html>
