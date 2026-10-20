@@ -452,7 +452,7 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
         <div class="love-field" id="loveField" aria-hidden="true"></div>
         <img class="yes-image" id="yesImage" src="img/yes.png" alt="รูปหลังจากตอบ Yes" hidden>
         <img class="final-gif" id="finalGif" src="gif/giphy.gif" alt="" hidden>
-        <p class="thanks fade">ยินดีที่ได้รู้จักนะครับ<br>คุณแฟน</p>
+        <p class="thanks fade">สวัสดีครับ แฟนผม</p>
         <div class="night-garden" aria-hidden="true">
           <div class="flowers" id="flowers"></div>
         </div>
@@ -476,6 +476,7 @@ const CONFIG = {
   Q1_MS: 3000,        // แสดง "ผมมีคำถาม" กี่มิลลิวินาทีก่อนขึ้นคำถามจริง
   Q3_MS: 5000,        // แสดง "มีอีกคำถามครับ" กี่มิลลิวินาทีก่อนขึ้นคำถามแฟน
   MEMORIES_INTRO_MS: 5000, // แสดงชื่อก่อนเริ่มสไลด์
+  SLIDE_DURATION_MS: 3000, // แสดงแต่ละหน้าหลังรูปโหลดเสร็จ
   MUSIC: "music/[THAISUB] Albert Posis - Serendipity.mp3",   // ไฟล์เพลง (วางไว้ในโฟลเดอร์ music/) ปล่อยว่าง "" ถ้าไม่ใช้
   VOLUME: 0.6,        // 0 - 1
   SIDE_GIFS: ["gif/Heart Love Sticker3.gif", "gif/Heart Love Sticker4.gif"]   // [ซ้าย, ขวา] ของรูปในหน้าสไลด์
@@ -666,7 +667,7 @@ document.querySelectorAll('.sg').forEach((img, i) => {
 });
 
 /* ===== สไลด์ (ข้อความซ้าย รูปขวา พลิกหน้า) ===== */
-let sp = 0, flipping = false, canContinueFromSlides = false;
+let sp = 0, flipping = false, canContinueFromSlides = false, slideTimer = null;
 const SPREADS = PHOTOS.length;
 const dots = $('dots');
 for (let i = 0; i < SPREADS; i++) dots.appendChild(document.createElement('i'));
@@ -696,9 +697,34 @@ function paint(){
   [...dots.children].forEach((d, i) => d.classList.toggle('on', i === sp));
   if (sp === SPREADS - 1) canContinueFromSlides = true;
   $('swipeGuide').hidden = !canContinueFromSlides;
+  scheduleSlideAdvance();
+}
+function scheduleSlideAdvance(){
+  clearTimeout(slideTimer);
+  slideTimer = null;
+  if (sp >= SPREADS - 1) return;
+
+  const page = sp;
+  const image = pR.querySelector('img');
+  const advance = () => {
+    if (sp !== page || flipping || pR.querySelector('img') !== image) return;
+    slideTimer = setTimeout(() => {
+      slideTimer = null;
+      if (sp === page && !flipping) goto(page + 1);
+    }, CONFIG.SLIDE_DURATION_MS);
+  };
+
+  if (!image || image.complete){
+    advance();
+  } else {
+    image.addEventListener('load', advance, {once:true});
+    image.addEventListener('error', advance, {once:true});
+  }
 }
 function goto(n){
   if (flipping || n < 0 || n >= SPREADS || n === sp) return;
+  clearTimeout(slideTimer);
+  slideTimer = null;
   flipping = true;
   const fwd = n > sp;
   if (fwd){
@@ -718,9 +744,10 @@ function goto(n){
   flip.style.transition = 'transform .9s ease';
   flip.style.transform = fwd ? 'rotateY(-166deg)' : 'rotateY(166deg)';
   setTimeout(() => {
-    sp = n; paint();
+    sp = n;
     flip.hidden = true;
     flipping = false;
+    paint();
   }, 950);
 }
 function moveSlide(step){
@@ -740,6 +767,8 @@ function continueFromSlides(){
 }
 function startSlides(){
   sp = 0; canContinueFromSlides = false;
+  clearTimeout(slideTimer);
+  slideTimer = null;
   paint();
 }
 let sx = 0, sy = 0;
