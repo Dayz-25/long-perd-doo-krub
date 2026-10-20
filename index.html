@@ -24,6 +24,12 @@ body.pinkblue #mute{color:var(--ink);background:#ffffff80}
 .screen{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:safe center;padding:clamp(12px,3vw,24px);overflow:hidden;text-align:center}
 .screen.on{display:flex}
 #s-slide{touch-action:pan-x}
+.memories-intro{position:fixed;inset:0;z-index:19;display:grid;place-items:center;padding:24px;
+  background:#12152b66;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  opacity:1;transition:opacity .6s ease,backdrop-filter .6s ease}
+.memories-intro[hidden]{display:none}
+.memories-intro.is-leaving{opacity:0;backdrop-filter:blur(0);-webkit-backdrop-filter:blur(0)}
+.memories-intro p{color:#fff;font-size:clamp(2rem,8vw,4rem);font-weight:600;text-shadow:0 4px 20px #0008}
 button{font:inherit;cursor:pointer;border:0;border-radius:999px;padding:12px 32px;background:var(--glow);color:var(--ink);font-weight:600;font-size:1.05rem}
 button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offset:3px}
 .hint{margin-top:28px;font-size:.95rem;opacity:.8}
@@ -55,12 +61,15 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 .eb-flap{left:0;right:0;bottom:100%;height:32%;background:var(--paper);clip-path:polygon(0 100%,50% 0,100% 100%)}
 .env-back{filter:drop-shadow(0 4px 4px #0003)}
 .eb-front{inset:0;background:var(--fold);border-radius:0 0 4px 4px;clip-path:polygon(0 0,50% 58%,100% 0,100% 100%,0 100%)}
-.book{position:relative;width:100%;aspect-ratio:3/2;perspective:1200px;animation:book-in 1.2s ease}
+.book{position:relative;width:100%;aspect-ratio:3/2;perspective:1200px;animation:book-in 1.2s ease;cursor:ew-resize}
+#book:focus-visible{outline:3px solid #fff;outline-offset:6px}
 @keyframes book-in{from{transform:translateY(60px) scale(.8);opacity:0}}
 .book::after{content:"";position:absolute;left:calc(50% - 10px);top:0;width:20px;height:100%;pointer-events:none;z-index:4;
   background:linear-gradient(90deg,transparent,#0000002e,transparent)}
 .pg{position:absolute;top:0;width:50%;height:100%;background:var(--paper);overflow:hidden;box-shadow:0 12px 30px #0007}
 .pg img,.flip img{display:block;width:100%;height:100%;object-fit:cover}
+.slide-copy{height:100%;display:grid;place-items:center;padding:clamp(12px,3vw,28px);color:var(--ink);text-align:left;font-size:clamp(.68rem,1.8vw,1rem);line-height:1.8}
+.slide-copy p{max-height:100%;overflow:auto;white-space:pre-line}
 #pgL{left:0;border-radius:6px 0 0 6px;transform-origin:right center;transform:rotateY(14deg);animation:openL 1.1s ease .3s backwards}
 @keyframes openL{from{transform:rotateY(180deg)}}
 #pgR{left:50%;border-radius:0 6px 6px 0;transform-origin:left center;transform:rotateY(-14deg)}
@@ -97,13 +106,41 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 .card{width:min(92vw,460px);max-height:calc(var(--viewport-height) - 40px);overflow:hidden;background:var(--paper);color:var(--ink);border-radius:10px;padding:28px 24px;text-align:left;line-height:1.85;box-shadow:0 20px 60px #000b;animation:rise .6s ease}
 @keyframes rise{from{transform:translateY(40px) rotate(-1.5deg);opacity:0}}
 .card p{margin-bottom:.8em}
-#m-card .card{width:min(92vw,560px,calc(var(--viewport-height) - 40px));max-height:none;aspect-ratio:1;overflow:hidden;display:flex;flex-direction:column;align-items:stretch;justify-content:space-evenly;padding:clamp(8px,2.4vw,20px);line-height:1.2}
-#m-card .card p{flex:none;font-size:clamp(.55rem,2vw,.92rem);line-height:1.2;margin-bottom:.2em}
-#m-card .card-gif{display:block;width:min(48vw,240px);height:clamp(58px,12vh,82px);object-fit:contain;margin:0 auto;flex:none}
-#m-card .card .row{display:flex;align-items:center;justify-content:center;min-height:30px;margin-top:1px;flex:none}
-#m-card .card .row button{padding:4px 18px}
+#m-card .card{position:relative;width:min(92vw,560px,calc(var(--viewport-height) - 40px));max-height:none;aspect-ratio:1;overflow:hidden;display:flex;flex-direction:column;align-items:stretch;justify-content:space-evenly;padding:clamp(8px,2.4vw,20px);line-height:1.2}
+#m-card .card-deck,#m-card .card-reader{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#m-card .card-deck[hidden],#m-card .card-reader[hidden]{display:none}
+#m-card .card-deck h2{font-size:clamp(1rem,4vw,1.5rem);margin-bottom:8px}
+#m-card .card-deck p{font-size:clamp(.7rem,2.2vw,.95rem);text-align:center;line-height:1.5}
+.card-stack{position:relative;width:min(72vw,340px);height:min(48vw,230px);min-height:150px;margin:4px 0 12px}
+.stack-card{position:absolute;left:50%;top:50%;width:44%;height:90%;padding:10px;border:3px solid #fff;border-radius:12px;
+  background:linear-gradient(145deg,#786de0,#39366f);color:#fff;box-shadow:0 8px 18px #0003;
+  display:grid;place-items:center;font-size:2rem;transform:translate(-50%,-50%) rotate(var(--turn)) translateX(var(--offset));transition:transform .25s,filter .25s,opacity .25s,box-shadow .25s}
+.stack-card::before{content:"♡"}
+.stack-card.is-available{box-shadow:0 0 12px 4px #fff9,0 0 28px 8px #a99bffb3,0 8px 18px #0004}
+.stack-card.is-locked{filter:grayscale(.8);opacity:.3;box-shadow:0 4px 10px #0002}
+.stack-card.is-available:hover,.stack-card.is-available:focus-visible{filter:brightness(1.15);transform:translate(-50%,-58%) rotate(var(--turn)) translateX(var(--offset))}
+.stack-card:disabled{cursor:not-allowed}
+.stack-card:nth-child(1){--turn:-18deg;--offset:-38%}
+.stack-card:nth-child(2){--turn:-6deg;--offset:-13%}
+.stack-card:nth-child(3){--turn:6deg;--offset:13%}
+.stack-card:nth-child(4){--turn:18deg;--offset:38%}
+#m-card .card-gif{display:block;width:min(38vw,180px);height:clamp(44px,9vh,68px);object-fit:contain;margin:0 auto 6px;flex:none}
+#m-card .card-reader .card-message{flex:1;width:100%;min-height:0;overflow-y:auto;overflow-anchor:none;font-size:clamp(.68rem,2.2vw,1rem);line-height:1.55;margin:0;padding:8px 12px;white-space:pre-line}
+#m-card .card .row{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-height:34px;margin-top:6px;flex:none}
+#m-card .card .row button{padding:5px 14px;font-size:.85rem}
+#m-card #cardProgress{font-size:clamp(.55rem,1.8vw,.8rem);opacity:.7}
+#m-card #cardNext:disabled{opacity:.5;cursor:not-allowed}
+.card-reader.is-flipping{animation:card-flip .55s ease}
+@keyframes card-flip{from{transform:rotateY(90deg);opacity:.3}to{transform:rotateY(0);opacity:1}}
+.card-intro{position:absolute;inset:0;z-index:2;display:grid;place-items:center;padding:20px;
+  background:#12152b66;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  color:#fff;text-align:center;opacity:1;transition:opacity .5s ease}
+.card-intro[hidden]{display:none}
+.card-intro.is-leaving{opacity:0}
+.card-intro p{font-size:clamp(1.5rem,6vw,2.8rem);font-weight:600;text-shadow:0 4px 20px #0008}
+.card-title{flex:none;text-align:center;font-size:clamp(1rem,4vw,1.5rem);line-height:1.3}
 @media(max-width:360px){
-  #m-card .card p{font-size:.5rem;line-height:1.1}
+  #m-card .card-reader .card-message{font-size:.62rem;line-height:1.35}
   #m-card .card-gif{width:min(32vw,110px);height:clamp(34px,6vh,44px)}
 }
 .card-gif{display:block;width:min(44vw,190px);max-height:22vh;object-fit:contain;margin:0 auto 10px}
@@ -126,6 +163,8 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 .thanks{font-size:1.3rem;line-height:1.8}
 .yes-image{display:block;width:min(80vw,420px);max-height:calc(var(--viewport-height)*.65);object-fit:contain;margin:0 auto 12px}
 .final-gif{display:block;width:min(48vw,220px);max-height:20vh;object-fit:contain;margin:0 auto 12px}
+.jump-love{display:inline-flex;align-items:center;justify-content:center;margin:16px auto 0;padding:10px 22px;border:0;border-radius:999px;background:linear-gradient(135deg,#fff,#ffd9eb);color:#4a1a35;font-weight:700;box-shadow:0 10px 24px rgba(71,34,58,.18);cursor:pointer;transition:transform .2s ease, box-shadow .2s ease}
+.jump-love:hover,.jump-love:focus-visible{transform:translateY(-1px);box-shadow:0 14px 28px rgba(71,34,58,.22)}
 .no-gif{display:block;width:180px;height:auto;object-fit:contain;margin:14px auto 0;transition:width .3s ease}
 @media(max-width:759px){
   .env-cat{width:min(48vw,190px);max-height:24vh}
@@ -224,6 +263,7 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 .yn{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;align-items:center;min-height:100px;margin-top:24px}
 .yn button{transition:transform .3s,font-size .3s,padding .3s}
 .yn .no{background:var(--paper2)}
+.yn .no.no-escape{position:fixed;z-index:30;transition:none}
 .no-message{margin-top:16px;min-height:1.5em;font-size:clamp(1rem,4vw,1.3rem)}
 
 /* ดอกไม้ร่วง */
@@ -308,14 +348,14 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
     </button>
     <img class="env-cat" id="envCat" src="gif/Cat%20Meow%20Sticker.gif" alt="" hidden>
   </div>
-  <!-- <button class="skip-final" id="skipFinal" type="button">ดูหน้าหลังจากกด Yes</button> -->
+  <!-- <button class="jump-love" id="jumpLove" type="button">ไปตอบคำถามเลย</button> -->
 </section>
 
-<!-- 2 สไลด์รูป (หนังสือกางออก) -->
+<!-- 2 สไลด์ข้อความซ้าย รูปขวา (หนังสือกางออก) -->
 <section class="screen" id="s-slide">
   <div class="stage">
     <div class="env-back" aria-hidden="true"><i class="eb-body"></i><i class="eb-flap"></i><i class="eb-front"></i></div>
-    <div class="book" id="book">
+    <div class="book" id="book" tabindex="0" role="group" aria-label="คลิกด้านขวาเพื่อไปหน้าถัดไป ด้านซ้ายเพื่อย้อนกลับ">
       <div class="pg" id="pgL"></div>
       <div class="pg" id="pgR"></div>
       <div class="flip fwd" id="flip" hidden>
@@ -326,30 +366,38 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
   </div>
   <div class="nav"><div class="dots" id="dots"></div></div>
   <div class="swipe-guide" id="swipeGuide" hidden aria-live="polite">
-    <span class="swipe-arrow" aria-hidden="true">↑</span>
-    <span>ปัดขึ้นหรือ</span>
     <button class="slide-continue" id="slideContinue" type="button">Next</button>
   </div>
   <img class="sg sg1" alt="" hidden>
   <img class="sg sg2" alt="" hidden>
 </section>
 
-<div class="pre-card" id="preCard" aria-hidden="true">
-  <img src="gif/Couple%20Love%20Sticker2.gif" alt="">
+<div class="memories-intro" id="memoriesIntro" hidden aria-hidden="true">
+  <p>Our Memories</p>
 </div>
 
 <!-- 3 การ์ดข้อความ -->
 <div class="modal" id="m-card">
   <div class="card">
-    <img class="card-gif" id="cardGif" src="gif/Cat%20Love%20Sticker%20by%20ACHTUNG.gif" alt="" hidden>
-    <p>อยากขอบคุณพี่ที่ทักมาในวันนั้น ขอบคุณที่ชวนผมคุย โดยที่ไม่เคยทำให้ผมรู้สึกอึดอัดเลย จนทำให้เราได้คุยกัน ได้รู้จักกัน และค่อยๆ กลายมาเป็นคนคุยกันแบบในวันนี้</p>
-
-<p>ผมดีใจมากๆ นะครับที่ได้รู้จักพี่ ตั้งแต่วันนั้นจนถึงวันนี้ ผมรู้สึกว่าเราเข้ากันได้ในหลายๆ อย่าง ไม่ว่าจะเป็นนิสัย ความคิด ทัศนคติ หรือมุมมองในการใช้ชีวิต บางอย่างเราอาจจะคิดเหมือนกัน แต่บางอย่างก็อาจจะต่างกัน แต่ความต่างเหล่านั้นไม่เคยทำให้ผมรู้สึกว่าเราไปด้วยกันไม่ได้เลย กลับรู้สึกว่ามันเป็นความต่างที่น่ารักดี เพราะมันทำให้ผมได้เห็นอีกมุมหนึ่งที่ผมอาจไม่เคยมอง และยิ่งทำให้ผมอยากรู้จักพี่มากขึ้นเรื่อยๆ</p>
-
-<p>ตั้งแต่มีพี่เข้ามา ผมรู้สึกว่าทุกๆ วันมีอะไรให้รอคอยมากขึ้น ผมรอที่จะได้คุยกับพี่ รอที่จะได้เล่าเรื่องต่างๆ ให้พี่ฟัง หรือแม้แต่เรื่องเล็กๆ ในแต่ละวัน แค่ได้คุยกันก็ทำให้วันธรรมดาๆ ของผมไม่น่าเบื่อเลย</p>
-
-<p>ผมชอบเวลาที่ได้คุยกับพี่ ชอบเวลาที่ได้รู้จักพี่ในแต่ละมุมมากขึ้น และผมก็อยากเป็นคนที่ได้อยู่รับฟังเรื่องราวต่างๆ ของพี่ต่อไป ไม่ว่าจะเป็นเรื่องดีๆ เรื่องที่เหนื่อย หรือเรื่องเล็กๆ น้อยๆ ในแต่ละวันเท่าที่พี่อยากจะเล่า</p>
-    <div class="row"><button id="b1" hidden>Next</button></div>
+    <div class="card-deck" id="cardDeck">
+      <h2>การ์ดความทรงจำ</h2>
+      <p>เลือกไพ่เพื่อพลิกอ่านทีละใบ</p>
+      <div class="card-stack" id="cardStack"></div>
+      <p id="deckProgress" aria-live="polite">อ่านแล้ว 0 / 4 ใบ</p>
+      <button id="cardNext" type="button" hidden>Next</button>
+    </div>
+    <div class="card-reader" id="cardReader" hidden>
+      <img class="card-gif" id="cardGif" src="gif/Cat%20Love%20Sticker%20by%20ACHTUNG.gif" alt="" hidden>
+      <h2 class="card-title" id="cardTitle"></h2>
+      <p class="card-message" id="cardMessage"></p>
+      <div class="row">
+        <span id="cardProgress" aria-live="polite"></span>
+        <button id="cardBack" type="button">Back</button>
+      </div>
+    </div>
+    <div class="card-intro" id="cardIntro" hidden aria-hidden="true">
+      <p>September with you.</p>
+    </div>
   </div>
 </div>
 
@@ -395,11 +443,10 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
         <img class="q1-gif" id="coupleGif" src="gif/Couple%20Love%20Sticke1.gif" alt="" hidden>
         <p class="q fade">สนใจมาเป็นแฟนกันไหมครับ<br>ขยับจากคนคุยมาเป็นแฟนกันไหมครับ ?</p>
         <div class="yn">
-          <button id="yes">Yes</button>
-          <button id="no" class="no">No</button>
+          <button id="yes" type="button">Yes</button>
+          <button id="no" class="no" type="button">No</button>
         </div>
         <p class="no-message" id="noMsg" aria-live="polite" hidden></p>
-        <img class="no-gif" id="noGif" src="gif/Sad%20Cat%20Sticker%20by%20MYAOWL.gif" alt="แมวกำลังเศร้า" hidden>
       </div>
       <div id="done" hidden>
         <div class="love-field" id="loveField" aria-hidden="true"></div>
@@ -425,19 +472,27 @@ const CONFIG = {
   EMAILJS_TEMPLATE_ID: "template_j18baki",
   EMAILJS_PUBLIC_KEY: "bL8pcyntApCwbVgB0",
   HOLD_MS: 3000,      // กดค้างเปิดซอง
-  PRE_CARD_MS: 5000,  // แสดง GIF ก่อนการ์ดข้อความ
-  CARD_MS: 5000,      // รอก่อนปุ่ม Next ของการ์ด
+  CARD_TITLE_MS: 1800, // แสดงชื่อก่อนเปิดการ์ด
   Q1_MS: 3000,        // แสดง "ผมมีคำถาม" กี่มิลลิวินาทีก่อนขึ้นคำถามจริง
   Q3_MS: 5000,        // แสดง "มีอีกคำถามครับ" กี่มิลลิวินาทีก่อนขึ้นคำถามแฟน
-  SLIDE_MS: 3500,     // เวลาต่อ 1 หน้าที่กางออก (คู่รูป)
+  MEMORIES_INTRO_MS: 5000, // แสดงชื่อก่อนเริ่มสไลด์
   MUSIC: "music/[THAISUB] Albert Posis - Serendipity.mp3",   // ไฟล์เพลง (วางไว้ในโฟลเดอร์ music/) ปล่อยว่าง "" ถ้าไม่ใช้
   VOLUME: 0.6,        // 0 - 1
   SIDE_GIFS: ["gif/Heart Love Sticker3.gif", "gif/Heart Love Sticker4.gif"]   // [ซ้าย, ขวา] ของรูปในหน้าสไลด์
 };
-// 2) ใส่รูปไว้ในโฟลเดอร์ img/ (รูปเรียงเป็นคู่ ซ้าย-ขวา: 1-2, 3-4, 5-6)
+// 2) ใส่รูปไว้ในโฟลเดอร์ img/ และข้อความประกอบรูปตามลำดับ
 const PHOTOS = [
-  ["img/1.png"],["img/2.png"],["img/3.png"],["img/4.png"],["img/5.png"],["img/6.png"]
-  // ,["img/7.png"],["img/8.png"],["img/9.png"],["img/10.png"]
+  ["img/ข้อความแรก.jpg"],["img/1.jpg"],["img/2.jpg"],["img/ขอคุย.jpg"],["img/3.jpg"],["img/4.jpg"],["img/5.jpg"],["img/6.jpg"]
+];
+const SLIDE_TEXTS = [
+  "ทักครั้งแรก\n2025-09-13",
+  "รูปแรกที่พี่ทำกับผม\n2025-09-17",
+  "รูปแรกที่ผมทำรูปกับพี่\n2025-09-23",
+  "เป็นคนคุยกัน\n2025-09-20",
+  "รูปแรกที่ป็นคนคุยกัน\n2025-09-20",
+  "ของขวัญชิ้นแรกจากพี่\n2025-09-25",
+  "วันครบรอบคุยกัน 1 เดือน\n2025-10-20",
+  "วันครบรอบคุยกัน 1 เดือน\n2025-10-20"
 ];
 
 const $ = id => document.getElementById(id);
@@ -491,6 +546,35 @@ function endHold(e){
 seal.addEventListener('pointerdown', startHold);
 ['pointerup','pointercancel'].forEach(ev => seal.addEventListener(ev, endHold));
 seal.addEventListener('contextmenu', e => e.preventDefault());
+// function jumpToLoveQuestion(){
+//   document.body.classList.add('pinkblue');
+//   show('s-q2');
+//   $('s-env').hidden = true;
+//   $('s-slide').hidden = true;
+//   $('m-card').hidden = true;
+//   $('form').hidden = true;
+//   $('love').hidden = false;
+//   $('loveIntro').hidden = true;
+//   $('loveIntroGif').hidden = true;
+//   $('loveAsk').hidden = false;
+//   $('lovePrompt').hidden = false;
+//   $('done').hidden = true;
+//   const noMsg = $('noMsg');
+//   const noGif = $('noGif');
+//   if (noMsg){
+//     noMsg.hidden = true;
+//     noMsg.textContent = '';
+//   }
+//   if (noGif){
+//     noGif.remove();
+//   }
+//   const coupleGif = $('coupleGif');
+//   if (coupleGif){
+//     coupleGif.hidden = false;
+//     coupleGif.style.setProperty('display', 'block', 'important');
+//     coupleGif.style.setProperty('visibility', 'visible', 'important');
+//   }
+// }
 function openEnv(){
   opened = true; $('env').classList.add('open');
   startMusic();   // เริ่มเพลง
@@ -500,6 +584,15 @@ function openEnv(){
     show('s-slide');
     document.body.classList.add('pinkblue');   // เปลี่ยน bg เป็นฟ้าอมชมพู
     startSlides();
+    const intro = $('memoriesIntro');
+    intro.hidden = false;
+    setTimeout(() => {
+      intro.classList.add('is-leaving');
+      setTimeout(() => {
+        intro.hidden = true;
+        intro.classList.remove('is-leaving');
+      }, 600);
+    }, CONFIG.MEMORIES_INTRO_MS);
   }, 1900);
 }
 
@@ -572,19 +665,34 @@ document.querySelectorAll('.sg').forEach((img, i) => {
   img.src = encodeURI(src);
 });
 
-/* ===== สไลด์ (หนังสือ ซ้าย-ขวา พลิกหน้า) ===== */
-let sp = 0, direction = 1, timer = 0, flipping = false, canContinueFromSlides = false;
-const SPREADS = Math.ceil(PHOTOS.length / 2);
+/* ===== สไลด์ (ข้อความซ้าย รูปขวา พลิกหน้า) ===== */
+let sp = 0, flipping = false, canContinueFromSlides = false;
+const SPREADS = PHOTOS.length;
 const dots = $('dots');
 for (let i = 0; i < SPREADS; i++) dots.appendChild(document.createElement('i'));
 const pL = $('pgL'), pR = $('pgR'), flip = $('flip'), fF = $('flipF'), fB = $('flipB');
 
-function setPage(el, i){
-  el.innerHTML = PHOTOS[i] ? '<img src="' + PHOTOS[i][0] + '" alt="">' : '';
+function setPage(el, i, side){
+  el.replaceChildren();
+  if (side === 'text'){
+    const content = document.createElement('div');
+    content.className = 'slide-copy';
+    const paragraph = document.createElement('p');
+    paragraph.textContent = SLIDE_TEXTS[i] || '';
+    content.appendChild(paragraph);
+    el.appendChild(content);
+    return;
+  }
+  if (PHOTOS[i]){
+    const image = document.createElement('img');
+    image.src = PHOTOS[i][0];
+    image.alt = '';
+    el.appendChild(image);
+  }
 }
 function paint(){
-  setPage(pL, sp * 2);
-  setPage(pR, sp * 2 + 1);
+  setPage(pL, sp, 'text');
+  setPage(pR, sp, 'image');
   [...dots.children].forEach((d, i) => d.classList.toggle('on', i === sp));
   if (sp === SPREADS - 1) canContinueFromSlides = true;
   $('swipeGuide').hidden = !canContinueFromSlides;
@@ -592,10 +700,16 @@ function paint(){
 function goto(n){
   if (flipping || n < 0 || n >= SPREADS || n === sp) return;
   flipping = true;
-  clearTimeout(timer);
   const fwd = n > sp;
-  if (fwd){ setPage(fF, sp * 2 + 1); setPage(fB, n * 2); setPage(pR, n * 2 + 1); }
-  else    { setPage(fF, sp * 2);     setPage(fB, n * 2 + 1); setPage(pL, n * 2); }
+  if (fwd){
+    setPage(fF, sp, 'image');
+    setPage(fB, n, 'text');
+    setPage(pR, n, 'image');
+  } else {
+    setPage(fF, sp, 'text');
+    setPage(fB, n, 'image');
+    setPage(pL, n, 'text');
+  }
   flip.className = 'flip ' + (fwd ? 'fwd' : 'back');
   flip.style.transition = 'none';
   flip.style.transform = fwd ? 'rotateY(-14deg)' : 'rotateY(14deg)';
@@ -607,30 +721,26 @@ function goto(n){
     sp = n; paint();
     flip.hidden = true;
     flipping = false;
-    restart();
   }, 950);
 }
-function restart(){
-  clearTimeout(timer);
-  if (SPREADS < 2) return;
-  timer = setTimeout(() => {
-    if (sp + direction < 0 || sp + direction >= SPREADS) direction *= -1;
-    goto(sp + direction);
-  }, CONFIG.SLIDE_MS);
-}
 function moveSlide(step){
-  direction = step > 0 ? 1 : -1;
   goto(sp + step);
+}
+function navigateSlides(direction){
+  if (direction > 0 && sp === SPREADS - 1){
+    continueFromSlides();
+    return;
+  }
+  moveSlide(direction);
 }
 function continueFromSlides(){
   if (!canContinueFromSlides) return;
-  clearTimeout(timer);
   $('swipeGuide').hidden = true;
   showCard();
 }
 function startSlides(){
-  sp = 0; direction = 1; canContinueFromSlides = false;
-  paint(); restart();
+  sp = 0; canContinueFromSlides = false;
+  paint();
 }
 let sx = 0, sy = 0;
 $('s-slide').addEventListener('touchstart', e => {
@@ -646,21 +756,125 @@ $('s-slide').addEventListener('touchend', e => {
     moveSlide(dx < 0 ? 1 : -1);
   }
 });
+$('book').addEventListener('pointerdown', e => {
+  if (e.pointerType !== 'mouse' || e.button !== 0) return;
+  $('book').setPointerCapture(e.pointerId);
+  $('book').dataset.pointerX = String(e.clientX);
+  $('book').dataset.pointerY = String(e.clientY);
+});
+$('book').addEventListener('pointerup', e => {
+  if (e.pointerType !== 'mouse' || !$('book').hasPointerCapture(e.pointerId)) return;
+  $('book').releasePointerCapture(e.pointerId);
+  const startX = Number($('book').dataset.pointerX);
+  const startY = Number($('book').dataset.pointerY);
+  if (Math.hypot(e.clientX - startX, e.clientY - startY) > 12) return;
+  const bounds = $('book').getBoundingClientRect();
+  navigateSlides(e.clientX < bounds.left + bounds.width / 2 ? -1 : 1);
+});
+$('book').addEventListener('pointercancel', e => {
+  if ($('book').hasPointerCapture(e.pointerId)) $('book').releasePointerCapture(e.pointerId);
+});
+$('book').addEventListener('keydown', e => {
+  if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+  e.preventDefault();
+  navigateSlides(e.key === 'ArrowRight' ? 1 : -1);
+});
 $('slideContinue').addEventListener('click', continueFromSlides);
 
-/* ===== รอก่อนขึ้นปุ่ม Next ของการ์ด ===== */
-function wait(ms, btn, done){
-  setTimeout(() => { btn.hidden = false; btn.classList.add('fade'); }, ms);
-  btn.onclick = done;
+/* ===== การ์ดข้อความ เลือกเปิดอ่านทีละใบ ===== */
+const CARD_MESSAGES = [
+  "ครั้งแรกที่พี่ทักมา ผมแปลกใจมากเลยครับ เพราะไม่คิดว่าจะมีใครทักมาหาผม เนื่องจากปกติผมไม่ค่อยมีเพื่อนเท่าไหร่ ตอนที่พี่ทักมาทำความรู้จักและชวนผมเมคเฟรนด์ ผมยอมรับเลยว่าทั้งแปลกใจและแอบระแวงนิดหน่อย แต่พอได้คุยกันไปเรื่อยๆ ผมกลับรู้สึกสบายใจกับพี่มากกว่าที่คิด ไม่ได้รู้สึกอึดอัดหรือรู้สึกว่าพี่เป็นคนที่ไม่น่าคุยเลย ตรงกันข้าม ผมกลับรู้สึกว่าการได้คุยกับพี่เป็นเรื่องที่สบายใจมาก จนเราได้คุยกันประมาณอาทิตย์นึง พี่ก็ขอผมเป็นคนคุย ซึ่งเป็นความแปลกใจรอบที่สองเลยครับ ตอนแรกผมก็คิดว่ามันเร็วไปหรือเปล่า แต่พอลองคิดดูดีๆ ผมก็รู้สึกว่าการคุยกับพี่ไม่ได้ทำให้ผมรู้สึกไม่ดีเลย ผมสบายใจที่ได้คุยกับพี่ งั้นก็ลองเปิดใจดูสักครั้งก็ได้ แล้วจากที่ทุกอย่างมันดีอยู่แล้ว มันก็ยิ่งดีขึ้นในทุกๆ วัน จนมาถึงความแปลกใจรอบที่สาม คือวันที่พี่ส่งกาแฟมาให้ผม ผมไม่เคยคิดเลยว่าจะมีใครส่งอะไรแบบนี้มาให้ หลังจากนั้นเราก็เริ่มสลับกันส่งขนมให้กันไปมา พอมองย้อนกลับไป ตั้งแต่วันแรกที่ได้รู้จักพี่จนถึงวันนี้ ผมรู้สึกว่าทุกวันมันก็ดีอยู่แล้วครับ แต่พอมีพี่เข้ามา ทุกอย่างกลับยิ่งดีขึ้นเรื่อยๆ ผมดีใจมากนะครับที่วันนั้นพี่เลือกที่จะทักมาหาผม เพราะถ้าพี่ไม่ได้ทักมา เราก็คงไม่ได้มีเรื่องราวดีๆ แบบนี้ด้วยกัน",
+
+  "พอยิ่งได้รู้จักพี่มากขึ้น ผมก็ยิ่งรู้สึกว่าพี่น่ารักมากเลยครับ เป็นความน่ารักที่ผมรู้สึกได้ในทุกๆ วันที่เราได้รู้จักกัน เหมือนทุกๆ วันของผมมีพี่เข้ามาเป็นส่วนหนึ่ง และทำให้วันธรรมดาๆ กลายเป็นวันที่มีอะไรให้รู้สึกดีอยู่เสมอ\n\nผมชอบที่พี่ไม่ได้เร่งรีบกับความสัมพันธ์ของเรา แต่ค่อยๆ เป็นค่อยๆ ไปกับผม ให้เราได้ทำความรู้จักกันมากขึ้นทีละนิด มันทำให้ผมรู้สึกสบายใจและไม่ต้องกังวลอะไรเลยครับ ยิ่งเราได้คุยกันในหลายๆ เรื่อง ผมก็ยิ่งรู้สึกว่าทัศนคติของเราคล้ายกันมากกว่าที่คิด บางมุมเราก็คิดเหมือนกันจนผมแอบแปลกใจเลยครับว่า ทำไมเราถึงมีมุมมองที่คล้ายกันได้ขนาดนี้\n\nแล้วก็เรื่องของขวัญที่พี่ให้ผมด้วยนะครับ มันทำให้ผมรู้สึกดีมากๆ เลย ทั้งน่ารักทั้งใส่ใจ โดยเฉพาะกรอบดอกไม้กับเพลงที่โคตรจะเป็นเราสองคนเลยครับ ผมรู้สึกว่ามันไม่ใช่แค่ของขวัญธรรมดาๆ แต่มันเป็นอะไรที่พี่ตั้งใจเลือกให้ และมันยิ่งทำให้ผมรู้สึกดีที่ได้รู้จักพี่มากขึ้นไปอีกครับ",
+
+  "3",
+
+  "4"
+];
+
+const CARD_TITLES = [
+  "September with you.",
+  "October with you.",
+  "November with you.",
+  "December with you."
+];
+const readCards = new Set();
+const cardStack = $('cardStack');
+let unlockedCards = 0;
+let cardIntroTimer = 0;
+const cardBack = $('cardBack');
+CARD_MESSAGES.forEach((_, index) => {
+  const card = document.createElement('button');
+  card.type = 'button';
+  card.className = 'stack-card';
+  card.setAttribute('aria-label', 'เปิดอ่านการ์ดใบที่ ' + (index + 1));
+  card.addEventListener('click', () => openCard(index));
+  cardStack.appendChild(card);
+});
+function updateDeckProgress(){
+  $('deckProgress').textContent = 'อ่านแล้ว ' + readCards.size + ' / ' + CARD_MESSAGES.length + ' ใบ';
+  $('cardNext').hidden = readCards.size !== CARD_MESSAGES.length;
+  [...cardStack.children].forEach((card, index) => {
+    const available = index <= unlockedCards;
+    card.disabled = !available;
+    card.classList.toggle('is-available', available);
+    card.classList.toggle('is-locked', !available);
+  });
 }
+function openCard(index){
+  if (index > unlockedCards) return;
+  clearTimeout(cardIntroTimer);
+  readCards.add(index);
+  $('cardTitle').textContent = CARD_TITLES[index];
+  const message = $('cardMessage');
+  message.textContent = CARD_MESSAGES[index];
+  requestAnimationFrame(() => { message.scrollTop = 0; });
+  $('cardProgress').textContent = '';
+  $('cardDeck').hidden = true;
+  const reader = $('cardReader');
+  reader.hidden = false;
+  reader.classList.remove('is-flipping');
+  void reader.offsetWidth;
+  reader.classList.add('is-flipping');
+  cardBack.disabled = true;
+  $('cardIntro').hidden = false;
+  $('cardIntro').classList.remove('is-leaving');
+  $('cardIntro').querySelector('p').textContent = CARD_TITLES[index];
+  updateDeckProgress();
+  cardIntroTimer = setTimeout(() => {
+    const intro = $('cardIntro');
+    intro.classList.add('is-leaving');
+    cardIntroTimer = setTimeout(() => {
+      intro.hidden = true;
+      intro.classList.remove('is-leaving');
+      unlockedCards = Math.max(unlockedCards, index + 1);
+      cardBack.disabled = false;
+      updateDeckProgress();
+    }, 500);
+  }, CONFIG.CARD_TITLE_MS);
+}
+function closeCard(){
+  clearTimeout(cardIntroTimer);
+  cardBack.disabled = false;
+  cardBack.textContent = 'Back';
+  $('cardIntro').hidden = true;
+  $('cardIntro').classList.remove('is-leaving');
+  $('cardReader').hidden = true;
+  $('cardReader').classList.remove('is-flipping');
+  $('cardDeck').hidden = false;
+}
+function finishCards(){
+  if (readCards.size !== CARD_MESSAGES.length) return;
+  $('m-card').classList.remove('on');
+  showQ1();
+}
+$('cardBack').addEventListener('click', closeCard);
+$('cardNext').addEventListener('click', finishCards);
 function showCard(){
-  const intro = $('preCard');
-  intro.classList.add('on');
-  setTimeout(() => {
-    intro.classList.remove('on');
-    $('m-card').classList.add('on');
-    wait(CONFIG.CARD_MS, $('b1'), () => { $('m-card').classList.remove('on'); showQ1(); });
-  }, CONFIG.PRE_CARD_MS);
+  $('cardReader').hidden = true;
+  $('cardDeck').hidden = false;
+  updateDeckProgress();
+  $('m-card').classList.add('on');
 }
 function showQ1(){
   show('s-q1');
@@ -709,15 +923,23 @@ $('send').onclick = async () => {
     );
     continueToLove();
   } catch(e){
+    console.error('Failed to send the answer email:', e);
     $('send').disabled = false;
     $('send').classList.remove('sending');
     $('send').removeAttribute('aria-busy');
     $('send').removeAttribute('aria-label');
-    $('err').textContent = 'ส่งอีเมลไม่สำเร็จ กรุณาตรวจสอบการตั้งค่า EmailJS แล้วลองอีกครั้งนะ';
+    const detail = e && typeof e.text === 'string' && e.text
+      ? e.text
+      : e && typeof e.message === 'string' ? e.message : '';
+    const status = e && typeof e.status === 'number' ? ' (' + e.status + ')' : '';
+    $('err').textContent = detail
+      ? 'ส่งอีเมลไม่สำเร็จ' + status + ': ' + detail.slice(0, 180)
+      : 'ส่งอีเมลไม่สำเร็จ กรุณาตรวจสอบ Service ID, Template ID, Public Key และการตั้งค่า Template ใน EmailJS แล้วลองอีกครั้งนะ';
   }
 };
 
 /* ===== เป็นแฟนกันไหม ===== */
+
 const NO_MSGS = [
   "แน่ใจหรอครับ ?",
   "ทำไมละครับ 🥺",
@@ -726,48 +948,97 @@ const NO_MSGS = [
   "ผมเสียใจนะ T_T",
   "ลองกด Yes ดูไหมครับ",
   "ผมรอได้นะครับ รอจนกว่าจะกด Yes เลย",
+  "ผมยังมีหวังอยู่ไหมครับ 🥺",
+  "แงงง ทำไมถึงกด No ล่ะครับ",
+  "ผมทำอะไรผิดไปรึเปล่าครับ T_T",
+  "กด No แล้วใจผมเจ็บเลยครับ 💔",
+  "ลองเปลี่ยนใจดูอีกสักครั้งได้ไหมครับ",
+  "แค่กด Yes ผมก็ยิ้มได้ทั้งวันแล้วครับ",
+  "ใจแข็งจังเลยนะครับคนเก่ง 🥺",
+  "ผมมีความหวังทุกครั้งที่เห็นปุ่ม Yes เลยครับ",
+  "อีกนิดเดียวเองนะครับ ลองกด Yes ดูก่อน",
+  "ถ้ากด Yes ผมจะดีใจมากๆ เลยนะครับ 🥹",
+  "ปุ่ม Yes น่ารักกว่าตั้งเยอะเลยนะครับ 🤏🏻",
+  "ไม่เอา No ได้ไหมครับ เอา Yes แทนน้า 💖",
+  "สุดท้ายแล้วนะครับ... ลองคิดดูอีกที 🥺",
   "ปุ่ม No คงเสียแล้วมั้งครับ ลองกด Yes นะ"
 ];
+
 let noN = 0;
-const noButtonOffsets = new WeakMap();
-function moveNoButton(button){
-  const boundary = button.closest('.screen') || document.documentElement;
-  const rect = button.getBoundingClientRect();
-  const bounds = boundary.getBoundingClientRect();
-  const previous = noButtonOffsets.get(button) || {x:0,y:0};
-  const baseLeft = rect.left - previous.x;
-  const baseTop = rect.top - previous.y;
-  const minX = bounds.left + 16;
-  const maxX = Math.max(minX, bounds.right - button.offsetWidth - 16);
-  const minY = bounds.top + 16;
-  const maxY = Math.max(minY, bounds.bottom - button.offsetHeight - 16);
-  const yesRect = $('yes').getBoundingClientRect();
-  let x = baseLeft, y = baseTop;
+function moveNoButton(){
+  const noButton = $('no');
+  const yesButton = $('yes');
+  const current = noButton.getBoundingClientRect();
+  const yes = yesButton.getBoundingClientRect();
+  const padding = 8;
+  const maxX = Math.max(0, window.innerWidth - current.width - padding);
+  const maxY = Math.max(0, window.innerHeight - current.height - padding);
+  const minX = Math.min(padding, maxX);
+  const minY = Math.min(padding, maxY);
+  let destination = {x:minX, y:minY};
+  let bestScore = -1;
+
   for (let i = 0; i < 40; i++){
-    const candidateLeft = minX + Math.random() * (maxX - minX);
-    const candidateTop = minY + Math.random() * (maxY - minY);
-    const overlapsYes = candidateLeft < yesRect.right + 8
-      && candidateLeft + button.offsetWidth > yesRect.left - 8
-      && candidateTop < yesRect.bottom + 8
-      && candidateTop + button.offsetHeight > yesRect.top - 8;
-    if (!overlapsYes){
-      x = candidateLeft - baseLeft;
-      y = candidateTop - baseTop;
-      break;
+    const x = minX + Math.random() * (maxX - minX);
+    const y = minY + Math.random() * (maxY - minY);
+    const overlapsYes = x < yes.right + padding && x + current.width > yes.left - padding &&
+      y < yes.bottom + padding && y + current.height > yes.top - padding;
+    if (overlapsYes) continue;
+
+    const score = Math.hypot(x - current.left, y - current.top);
+    if (score > bestScore){
+      destination = {x, y};
+      bestScore = score;
     }
   }
-  button.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
-  noButtonOffsets.set(button, {x,y});
+
+  noButton.classList.add('no-escape');
+  noButton.style.left = destination.x + 'px';
+  noButton.style.top = destination.y + 'px';
 }
 function askNo(){
-  $('noMsg').textContent = NO_MSGS[noN % NO_MSGS.length];
-  $('noMsg').hidden = false;
-  $('noGif').hidden = false;
+  const noMsg = $('noMsg');
+  const coupleGif = $('coupleGif');
+  const love = $('love');
+  const loveAsk = $('loveAsk');
+  const lovePrompt = $('lovePrompt');
+  const form = $('form');
+
+  if (form) form.hidden = true;
+  if (love) love.hidden = false;
+  if (coupleGif) coupleGif.hidden = true;
+  if (noMsg){
+    noMsg.textContent = NO_MSGS[noN % NO_MSGS.length];
+    noMsg.hidden = false;
+    noMsg.style.removeProperty('display');
+    noMsg.style.removeProperty('visibility');
+    noMsg.style.setProperty('display', 'block', 'important');
+    noMsg.style.setProperty('visibility', 'visible', 'important');
+  }
+  if (loveAsk) loveAsk.hidden = false;
+  if (lovePrompt) lovePrompt.hidden = false;
+
+  let noGif = $('noGif');
+  if (!noGif){
+    noGif = document.createElement('img');
+    noGif.id = 'noGif';
+    noGif.className = 'no-gif';
+    noGif.onerror = () => noGif.remove();
+    noGif.src = 'gif/Sad%20Cat%20Sticker%20by%20MYAOWL.gif';
+    noGif.alt = 'แมวกำลังเศร้า';
+    noGif.style.setProperty('display', 'block', 'important');
+    noGif.style.setProperty('visibility', 'visible', 'important');
+    noGif.style.opacity = '1';
+    if (lovePrompt) lovePrompt.appendChild(noGif);
+  }
+  noGif.hidden = false;
+  noGif.style.width = Math.min(160 + noN * 80, window.innerWidth * 0.9, 520) + 'px';
+
   noN++;
-  $('noGif').style.width = Math.min(160 + noN * 80, window.innerWidth * 0.9, 520) + 'px';
-  const scale = Math.min(1 + noN * 0.1, 1.8);
+  const scale = Math.min(1 + Math.min(noN, 6) * 0.08, 1.45);
   $('yes').style.fontSize = (1.05 * scale) + 'rem';
   $('yes').style.padding = (12 * scale) + 'px ' + (32 * scale) + 'px';
+  moveNoButton();
 }
 function createLoveWords(){
   const field = $('loveField');
@@ -978,10 +1249,12 @@ function celebrate(){
   setTimeout(scheduleFirework, 1500);
 }
 
-$('noGif').onerror = () => $('noGif').remove();
-$('no').onclick = () => { askNo(); moveNoButton($('no')); };
+$('no').onclick = askNo;
 $('yes').onclick = sayYes;
-$('skipFinal').onclick = openFinalPage;
+const skipFinalButton = $('skipFinal');
+if (skipFinalButton) {
+  skipFinalButton.onclick = openFinalPage;
+}
 </script>
 </body>
 </html>
