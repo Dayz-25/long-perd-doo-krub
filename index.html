@@ -42,9 +42,15 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 .env .note{position:absolute;left:8%;right:8%;top:6%;bottom:6%;background:#fff;border-radius:4px;z-index:2;transition:transform .9s .5s ease,opacity .5s 1.2s}
 .env.open .note{transform:translateY(-70%);opacity:0}
 .env-cat{position:absolute;left:50%;right:auto;top:auto;bottom:100%;width:min(55vw,240px);max-height:25vh;object-fit:contain;transform:translateX(-50%);z-index:6;pointer-events:none}
+.env-cat-flipped{display:none}
 @media(max-width:759px){
   .env-cat{position:fixed;left:auto;right:env(safe-area-inset-right,0px);top:auto;bottom:calc(8px + env(safe-area-inset-bottom,0px));width:min(38vw,150px);max-height:20vh;transform:none}
+  .env-cat-flipped{display:block;position:fixed;left:env(safe-area-inset-left,0px);right:auto;top:env(safe-area-inset-top,0px);bottom:auto;width:min(100vw,420px);max-height:60vh;object-fit:contain;transform:none;z-index:6;pointer-events:none}
 }
+@media(min-width:760px){
+  .env-cat-flipped{display:block;position:absolute;left:100%;right:auto;top:auto;bottom:0%;width:min(24vw,210px);max-height:45vh;object-fit:contain;transform:none;z-index:6;pointer-events:none}
+}
+.env-cat-flipped[hidden]{display:none}
 .seal{position:absolute;left:50%;top:58%;width:76px;height:76px;margin:-38px 0 0 -38px;z-index:5;padding:0;border-radius:50%;background:var(--seal);color:#fff;box-shadow:0 4px 12px #0006;display:grid;place-items:center;touch-action:none;transition:opacity .4s}
 .env.open .seal{opacity:0;pointer-events:none}
 .fingerprint{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
@@ -114,8 +120,7 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 .card-stack{position:relative;width:min(72vw,340px);height:min(48vw,230px);min-height:150px;margin:4px 0 12px}
 .stack-card{position:absolute;left:50%;top:50%;width:44%;height:90%;padding:10px;border:3px solid #fff;border-radius:12px;
   background:linear-gradient(145deg,#786de0,#39366f);color:#fff;box-shadow:0 8px 18px #0003;
-  display:grid;place-items:center;font-size:2rem;transform:translate(-50%,-50%) rotate(var(--turn)) translateX(var(--offset));transition:transform .25s,filter .25s,opacity .25s,box-shadow .25s}
-.stack-card::before{content:"♡"}
+  display:grid;place-items:center;transform:translate(-50%,-50%) rotate(var(--turn)) translateX(var(--offset));transition:transform .25s,filter .25s,opacity .25s,box-shadow .25s}
 .stack-card.is-available{box-shadow:0 0 12px 4px #fff9,0 0 28px 8px #a99bffb3,0 8px 18px #0004}
 .stack-card.is-locked{filter:grayscale(.8);opacity:.3;box-shadow:0 4px 10px #0002}
 .stack-card.is-available:hover,.stack-card.is-available:focus-visible{filter:brightness(1.15);transform:translate(-50%,-58%) rotate(var(--turn)) translateX(var(--offset))}
@@ -167,7 +172,7 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 .jump-love:hover,.jump-love:focus-visible{transform:translateY(-1px);box-shadow:0 14px 28px rgba(71,34,58,.22)}
 .no-gif{display:block;width:180px;height:auto;object-fit:contain;margin:14px auto 0;transition:width .3s ease}
 @media(max-width:759px){
-  .env-cat{width:min(48vw,190px);max-height:24vh}
+  .env-cat{width:min(100vw,420px);max-height:60vh}
   .sg{width:min(42vw,200px)}
   .pre-card img{width:min(82vw,360px);max-height:calc(var(--viewport-height)*.78)}
   #m-card .card-gif{width:min(54vw,240px);height:clamp(48px,10vh,72px)}
@@ -347,6 +352,7 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
       <svg class="ring" viewBox="0 0 96 96"><circle id="ringc" cx="48" cy="48" r="42" transform="rotate(-90 48 48)"/></svg>
     </button>
     <img class="env-cat" id="envCat" src="gif/Cat%20Meow%20Sticker.gif" alt="" hidden>
+    <img class="env-cat-flipped" id="envCatFlipped" src="gif/Cat_Meow_Sticker_flipped.gif" alt="" hidden>
   </div>
   <!-- <button class="jump-love" id="jumpLove" type="button">ไปตอบคำถามเลย</button> -->
 </section>
@@ -452,7 +458,7 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
         <div class="love-field" id="loveField" aria-hidden="true"></div>
         <img class="yes-image" id="yesImage" src="img/yes.png" alt="รูปหลังจากตอบ Yes" hidden>
         <img class="final-gif" id="finalGif" src="gif/giphy.gif" alt="" hidden>
-        <p class="thanks fade">สวัสดีครับ แฟนผม</p>
+        <p class="thanks fade">Congratulations, we're official.</p>
         <div class="night-garden" aria-hidden="true">
           <div class="flowers" id="flowers"></div>
         </div>
@@ -483,7 +489,7 @@ const CONFIG = {
 };
 // 2) ใส่รูปไว้ในโฟลเดอร์ img/ และข้อความประกอบรูปตามลำดับ
 const PHOTOS = [
-  ["img/ข้อความแรก.jpg"],["img/1.jpg"],["img/2.jpg"],["img/ขอคุย.jpg"],["img/3.jpg"],["img/4.jpg"],["img/5.jpg"],["img/6.jpg"]
+  ["img/ข้อความแรก.jpg"],["img/1.jpg"],["img/2.jpg"],["img/ขอคุย.jpg"],["img/3.jpg"],["img/4.jpg"],["img/6.jpg"],["img/7.jpg"]
 ];
 const SLIDE_TEXTS = [
   "ทักครั้งแรก\n2025-09-13",
@@ -493,7 +499,7 @@ const SLIDE_TEXTS = [
   "รูปแรกที่ป็นคนคุยกัน\n2025-09-20",
   "ของขวัญชิ้นแรกจากพี่\n2025-09-25",
   "วันครบรอบคุยกัน 1 เดือน\n2025-10-20",
-  "วันครบรอบคุยกัน 1 เดือน\n2025-10-20"
+  "โทรครั้งแรกกับพี่\n2026-10-31"
 ];
 
 const $ = id => document.getElementById(id);
@@ -508,6 +514,7 @@ function revealImage(img){
 }
 [
   'envCat',
+  'envCatFlipped',
   'q1Gif',
   'loveIntroGif',
   'coupleGif',
