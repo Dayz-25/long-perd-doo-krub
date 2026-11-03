@@ -45,7 +45,7 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 .env-cat-flipped{display:none}
 @media(max-width:759px){
   .env-cat{position:fixed;left:auto;right:env(safe-area-inset-right,0px);top:auto;bottom:calc(8px + env(safe-area-inset-bottom,0px));width:min(38vw,150px);max-height:20vh;transform:none}
-  .env-cat-flipped{display:block;position:fixed;left:env(safe-area-inset-left,0px);right:auto;top:env(safe-area-inset-top,0px);bottom:auto;width:min(100vw,420px);max-height:60vh;object-fit:contain;transform:none;z-index:6;pointer-events:none}
+  .env-cat-flipped{display:block;position:fixed;left:env(safe-area-inset-left,0px);right:auto;top:calc(env(safe-area-inset-top,0px) - 10vh);bottom:auto;width:min(100vw,420px);max-height:60vh;object-fit:contain;transform:none;z-index:6;pointer-events:none}
 }
 @media(min-width:760px){
   .env-cat-flipped{display:block;position:absolute;left:100%;right:auto;top:auto;bottom:0%;width:min(24vw,210px);max-height:45vh;object-fit:contain;transform:none;z-index:6;pointer-events:none}
@@ -117,8 +117,8 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 #m-card .card-deck[hidden],#m-card .card-reader[hidden]{display:none}
 #m-card .card-deck h2{font-size:clamp(1rem,4vw,1.5rem);margin-bottom:8px}
 #m-card .card-deck p{font-size:clamp(.7rem,2.2vw,.95rem);text-align:center;line-height:1.5}
-.card-stack{position:relative;width:min(72vw,340px);height:min(48vw,230px);min-height:150px;margin:4px 0 12px}
-.stack-card{position:absolute;left:50%;top:50%;width:44%;height:90%;padding:10px;border:3px solid #fff;border-radius:12px;
+.card-stack{position:relative;width:min(78vw,370px);height:min(52vw,250px);min-height:160px;margin:4px 0 12px}
+.stack-card{position:absolute;left:50%;top:50%;width:48%;height:94%;padding:10px;border:3px solid #fff;border-radius:12px;
   background:linear-gradient(145deg,#786de0,#39366f);color:#fff;box-shadow:0 8px 18px #0003;
   display:grid;place-items:center;transform:translate(-50%,-50%) rotate(var(--turn)) translateX(var(--offset));transition:transform .25s,filter .25s,opacity .25s,box-shadow .25s}
 .stack-card.is-available{box-shadow:0 0 12px 4px #fff9,0 0 28px 8px #a99bffb3,0 8px 18px #0004}
@@ -131,9 +131,8 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 .stack-card:nth-child(4){--turn:18deg;--offset:38%}
 #m-card .card-gif{display:block;width:min(38vw,180px);height:clamp(44px,9vh,68px);object-fit:contain;margin:0 auto 6px;flex:none}
 #m-card .card-reader .card-message{flex:1;width:100%;min-height:0;overflow-y:auto;overflow-anchor:none;font-size:clamp(.68rem,2.2vw,1rem);line-height:1.55;margin:0;padding:8px 12px;white-space:pre-line}
-#m-card .card .row{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;min-height:34px;margin-top:6px;flex:none}
+#m-card .card .row{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:34px;margin-top:6px;flex:none}
 #m-card .card .row button{padding:5px 14px;font-size:.85rem}
-#m-card #cardProgress{font-size:clamp(.55rem,1.8vw,.8rem);opacity:.7}
 #m-card #cardNext:disabled{opacity:.5;cursor:not-allowed}
 .card-reader.is-flipping{animation:card-flip .55s ease}
 @keyframes card-flip{from{transform:rotateY(90deg);opacity:.3}to{transform:rotateY(0);opacity:1}}
@@ -152,6 +151,8 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 .card .row{display:flex;align-items:center;justify-content:center;min-height:52px;margin-top:12px}
 .fade{animation:in .8s ease}@keyframes in{from{opacity:0;transform:scale(.9)}}
 .q{font-size:clamp(1rem,4.5vw,1.5rem);line-height:1.55;max-width:420px}
+@media(min-width:760px){#lovePrompt .q{max-width:none;white-space:nowrap}}
+@media(min-width:760px){#s-q2 #form>.q{max-width:none;white-space:nowrap;font-size:clamp(.9rem,1.6vw,1.5rem)}}
 .q1-gif{width:min(48vw,220px);max-height:34vh;object-fit:contain;margin-bottom:12px}
 .answer-row{display:flex;align-items:center;justify-content:center;gap:14px;width:min(92vw,680px);margin:22px auto 16px}
 .answer-input{display:flex;flex:1;min-width:0;flex-direction:column;align-items:center;gap:12px}
@@ -165,20 +166,30 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 @keyframes mail-send{0%{transform:translate(-70%,-20%) rotate(-12deg);opacity:0}20%{opacity:1}75%{transform:translate(30%,-90%) rotate(12deg);opacity:1}100%{transform:translate(70%,-130%) rotate(18deg);opacity:0}}
 .answer-row textarea{width:100%;height:clamp(100px,24vh,180px);margin:0;padding:14px;border-radius:10px;border:0;font:inherit;font-size:1rem;color:var(--ink);background:var(--paper);resize:none}
 .answer-gif{width:min(34vw,260px);max-height:40vh;object-fit:contain}
-.thanks{font-size:1.3rem;line-height:1.8}
-.yes-image{display:block;width:min(80vw,420px);max-height:calc(var(--viewport-height)*.65);object-fit:contain;margin:0 auto 12px}
+.thanks-layout{display:flex;align-items:center;justify-content:center;gap:clamp(12px,2vw,28px)}
+.thanks{flex:none;font-size:1.3rem;line-height:1.8}
+.yes-image{display:block;width:min(35vw,420px);max-height:calc(var(--viewport-height)*.65);object-fit:contain;margin:0}
 .final-gif{display:block;width:min(48vw,220px);max-height:20vh;object-fit:contain;margin:0 auto 12px}
+@media(min-width:760px){
+  #done .final-gif{width:min(40vw,180px);max-height:18vh;transform:translateY(-64px);margin-bottom:-12px}
+  #done .thanks-layout{transform:translateY(-48px)}
+}
 .jump-love{display:inline-flex;align-items:center;justify-content:center;margin:16px auto 0;padding:10px 22px;border:0;border-radius:999px;background:linear-gradient(135deg,#fff,#ffd9eb);color:#4a1a35;font-weight:700;box-shadow:0 10px 24px rgba(71,34,58,.18);cursor:pointer;transition:transform .2s ease, box-shadow .2s ease}
 .jump-love:hover,.jump-love:focus-visible{transform:translateY(-1px);box-shadow:0 14px 28px rgba(71,34,58,.22)}
 .no-gif{display:block;width:180px;height:auto;object-fit:contain;margin:14px auto 0;transition:width .3s ease}
 @media(max-width:759px){
+  #done:not([hidden]){display:flex;flex-direction:column;align-items:center}
+  .thanks-layout{display:contents}
+  #done .thanks{order:3;transform:translateY(-48px)}
+  #done .yes-image{order:2;width:min(80vw,420px);max-height:calc(var(--viewport-height)*.65);margin:0 auto 12px;transform:translateY(-44px)}
+  #done .final-gif{order:1}
   .env-cat{width:min(100vw,420px);max-height:60vh}
   .sg{width:min(42vw,200px)}
   .pre-card img{width:min(82vw,360px);max-height:calc(var(--viewport-height)*.78)}
   #m-card .card-gif{width:min(54vw,240px);height:clamp(48px,10vh,72px)}
   .q1-gif{width:min(60vw,280px);max-height:38vh}
   .answer-gif{width:min(44vw,300px);max-height:44vh}
-  .final-gif{width:min(60vw,270px);max-height:25vh}
+  #done .final-gif{width:min(45vw,200px);max-height:20vh;margin-bottom:0;transform:translateY(-44px)}
   .no-gif{width:min(58vw,240px)}
 }
 @media(max-width:360px){
@@ -354,6 +365,7 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
     <img class="env-cat" id="envCat" src="gif/Cat%20Meow%20Sticker.gif" alt="" hidden>
     <img class="env-cat-flipped" id="envCatFlipped" src="gif/Cat_Meow_Sticker_flipped.gif" alt="" hidden>
   </div>
+  <button class="skip-final" id="skipFinal" type="button">ข้ามไปหน้าสุดท้าย</button>
   <!-- <button class="jump-love" id="jumpLove" type="button">ไปตอบคำถามเลย</button> -->
 </section>
 
@@ -386,10 +398,7 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 <div class="modal" id="m-card">
   <div class="card">
     <div class="card-deck" id="cardDeck">
-      <h2>การ์ดความทรงจำ</h2>
-      <p>เลือกไพ่เพื่อพลิกอ่านทีละใบ</p>
       <div class="card-stack" id="cardStack"></div>
-      <p id="deckProgress" aria-live="polite">อ่านแล้ว 0 / 4 ใบ</p>
       <button id="cardNext" type="button" hidden>Next</button>
     </div>
     <div class="card-reader" id="cardReader" hidden>
@@ -397,7 +406,6 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
       <h2 class="card-title" id="cardTitle"></h2>
       <p class="card-message" id="cardMessage"></p>
       <div class="row">
-        <span id="cardProgress" aria-live="polite"></span>
         <button id="cardBack" type="button">Back</button>
       </div>
     </div>
@@ -418,7 +426,7 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
   <div id="form">
     <p class="q fade">
       ตั้งแต่วันแรกที่เราได้รู้จักกันจนถึงวันนี้<br>
-      พี่รู้สึกยังไงบ้างครับ<br>
+      พี่รู้สึกยังไงบ้างครับ?<br>
       ความรู้สึกที่พี่มีต่อผมมันดีขึ้นเรื่อยๆ หรือมีอะไรเปลี่ยนไปบ้างไหมครับ<br>
       แล้วมีอะไรที่พี่อยากบอกผมไหมครับ?
     </p>
@@ -456,9 +464,12 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
       </div>
       <div id="done" hidden>
         <div class="love-field" id="loveField" aria-hidden="true"></div>
-        <img class="yes-image" id="yesImage" src="img/yes.png" alt="รูปหลังจากตอบ Yes" hidden>
         <img class="final-gif" id="finalGif" src="gif/giphy.gif" alt="" hidden>
-        <p class="thanks fade">Congratulations, we're official.</p>
+        <div class="thanks-layout">
+          <p class="thanks fade">Congratulations,</p>
+          <img class="yes-image" id="yesImage" src="img/yes.png" alt="รูปหลังจากตอบ Yes" hidden>
+          <p class="thanks fade">we're official.</p>
+        </div>
         <div class="night-garden" aria-hidden="true">
           <div class="flowers" id="flowers"></div>
         </div>
@@ -489,7 +500,7 @@ const CONFIG = {
 };
 // 2) ใส่รูปไว้ในโฟลเดอร์ img/ และข้อความประกอบรูปตามลำดับ
 const PHOTOS = [
-  ["img/ข้อความแรก.jpg"],["img/1.jpg"],["img/2.jpg"],["img/ขอคุย.jpg"],["img/3.jpg"],["img/4.jpg"],["img/6.jpg"],["img/7.jpg"]
+  ["img/ข้อความแรก.jpg"],["img/1.jpg"],["img/2.jpg"],["img/ขอคุย.jpg"],["img/3.jpg"],["img/4.jpg"],["img/5.jpg"],["img/6.jpg"],["img/7.jpg"]
 ];
 const SLIDE_TEXTS = [
   "ทักครั้งแรก\n2025-09-13",
@@ -498,6 +509,7 @@ const SLIDE_TEXTS = [
   "เป็นคนคุยกัน\n2025-09-20",
   "รูปแรกที่ป็นคนคุยกัน\n2025-09-20",
   "ของขวัญชิ้นแรกจากพี่\n2025-09-25",
+  "วันครบรอบคุยกัน 1 เดือน\n2025-10-20",
   "วันครบรอบคุยกัน 1 เดือน\n2025-10-20",
   "โทรครั้งแรกกับพี่\n2026-10-31"
 ];
@@ -830,7 +842,6 @@ CARD_MESSAGES.forEach((_, index) => {
   cardStack.appendChild(card);
 });
 function updateDeckProgress(){
-  $('deckProgress').textContent = 'อ่านแล้ว ' + readCards.size + ' / ' + CARD_MESSAGES.length + ' ใบ';
   $('cardNext').hidden = readCards.size !== CARD_MESSAGES.length;
   [...cardStack.children].forEach((card, index) => {
     const available = index <= unlockedCards;
@@ -847,7 +858,6 @@ function openCard(index){
   const message = $('cardMessage');
   message.textContent = CARD_MESSAGES[index];
   requestAnimationFrame(() => { message.scrollTop = 0; });
-  $('cardProgress').textContent = '';
   $('cardDeck').hidden = true;
   const reader = $('cardReader');
   reader.hidden = false;
