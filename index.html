@@ -311,6 +311,7 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 
 #mute{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:12px;z-index:30;width:42px;height:42px;padding:0;display:grid;place-items:center;background:#ffffff26;color:var(--paper);backdrop-filter:blur(4px)}
 #mute svg{width:22px;height:22px;fill:currentColor}
+#mute[aria-pressed="true"]::after{content:"";position:absolute;width:2px;height:28px;border-radius:2px;background:currentColor;transform:rotate(-45deg);pointer-events:none}
 /* พลุ (CSS ล้วน) */
 #fx{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:2}
 .burst{position:absolute;width:0;height:0;transform:scale(var(--burst-scale,1))}
@@ -714,6 +715,8 @@ function setPage(el, i, side){
     const image = document.createElement('img');
     image.src = PHOTOS[i][0];
     image.alt = '';
+    image.loading = 'lazy';
+    image.decoding = 'async';
     el.appendChild(image);
   }
 }
