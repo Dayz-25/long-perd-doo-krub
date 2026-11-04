@@ -6,7 +6,7 @@
 <title>opening</title>
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#12152b;--bg2:#2c2a5c;--paper:#e4e6ef;--paper2:#c3c8da;--fold:#9aa2c4;--seal:#5a4fc2;--ink:#2a2f4f;--glow:#b8b3f2;--dot:#a2a8c3;--viewport-height:100vh}
+:root{--bg:#12152b;--bg2:#2c2a5c;--paper:#e4e6ef;--paper2:#c3c8da;--fold:#9aa2c4;--seal:#5a4fc2;--ink:#2a2f4f;--glow:#b8b3f2;--viewport-height:100vh}
 @supports(height:100dvh){:root{--viewport-height:100dvh}}
 *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
@@ -90,7 +90,6 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 .swipe-arrow{font-size:1.5rem;line-height:1;animation:swipe-up 1s ease-in-out infinite}
 .slide-continue{padding:7px 18px;font-size:.9rem}
 @keyframes swipe-up{0%,100%{transform:translateY(4px);opacity:.65}50%{transform:translateY(-4px);opacity:1}}
-.dots{display:flex;gap:6px}.dots i{width:7px;height:7px;border-radius:50%;background:var(--dot)}.dots i.on{background:var(--seal)}
 .skip-final{margin-top:20px;padding:9px 20px;font-size:.9rem}
 
 /* GIF ข้างรูป */
@@ -103,7 +102,7 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 }
 
 /* modal / cards */
-.modal{position:fixed;inset:0;background:#0005;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}
+.modal{position:fixed;inset:0;background:transparent;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}
 .modal.on{display:flex}
 .pre-card{position:fixed;inset:0;z-index:19;display:none;align-items:center;justify-content:center;
   background:#0005;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
@@ -112,12 +111,14 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 .card{width:min(92vw,460px);max-height:calc(var(--viewport-height) - 40px);overflow:hidden;background:var(--paper);color:var(--ink);border-radius:10px;padding:28px 24px;text-align:left;line-height:1.85;box-shadow:0 20px 60px #000b;animation:rise .6s ease}
 @keyframes rise{from{transform:translateY(40px) rotate(-1.5deg);opacity:0}}
 .card p{margin-bottom:.8em}
-#m-card .card{position:relative;width:min(92vw,560px,calc(var(--viewport-height) - 40px));max-height:none;aspect-ratio:1;overflow:hidden;display:flex;flex-direction:column;align-items:stretch;justify-content:space-evenly;padding:clamp(8px,2.4vw,20px);line-height:1.2}
+#m-card .card{position:relative;width:min(92vw,560px,calc(var(--viewport-height) - 40px));max-height:none;aspect-ratio:1;overflow:hidden;background:transparent;box-shadow:none;display:flex;flex-direction:column;align-items:stretch;justify-content:space-evenly;padding:clamp(8px,2.4vw,20px);line-height:1.2}
+#m-card .card:not(.is-deck){width:min(92vw,460px,calc((var(--viewport-height) - 40px)*.75));max-height:calc(var(--viewport-height) - 40px);aspect-ratio:3/4;padding:clamp(18px,4vw,30px);background-color:#fbf7ec;background-image:radial-gradient(ellipse at 15% 10%,#ffffffb3,transparent 70%),linear-gradient(135deg,#fffaf0,#f4ecd9);color:#403b32;border:1px solid #e8dfcc;border-radius:3px;box-shadow:0 18px 50px #0008,0 2px 6px #0002}
 #m-card .card-deck,#m-card .card-reader{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
 #m-card .card-deck[hidden],#m-card .card-reader[hidden]{display:none}
 #m-card .card-deck h2{font-size:clamp(1rem,4vw,1.5rem);margin-bottom:8px}
 #m-card .card-deck p{font-size:clamp(.7rem,2.2vw,.95rem);text-align:center;line-height:1.5}
 .card-stack{position:relative;width:min(78vw,370px);height:min(52vw,250px);min-height:160px;margin:4px 0 12px}
+#m-card #cardNext{margin-top:20px}
 .stack-card{position:absolute;left:50%;top:50%;width:48%;height:94%;padding:10px;border:3px solid #fff;border-radius:12px;
   background:linear-gradient(145deg,#786de0,#39366f);color:#fff;box-shadow:0 8px 18px #0003;
   display:grid;place-items:center;transform:translate(-50%,-50%) rotate(var(--turn)) translateX(var(--offset));transition:transform .25s,filter .25s,opacity .25s,box-shadow .25s}
@@ -365,7 +366,7 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
     <img class="env-cat" id="envCat" src="gif/Cat%20Meow%20Sticker.gif" alt="" hidden>
     <img class="env-cat-flipped" id="envCatFlipped" src="gif/Cat_Meow_Sticker_flipped.gif" alt="" hidden>
   </div>
-  <button class="skip-final" id="skipFinal" type="button">ข้ามไปหน้าสุดท้าย</button>
+  <!-- <button class="skip-final" id="skipFinal" type="button">ข้ามไปหน้าสุดท้าย</button> -->
   <!-- <button class="jump-love" id="jumpLove" type="button">ไปตอบคำถามเลย</button> -->
 </section>
 
@@ -382,9 +383,8 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
       </div>
     </div>
   </div>
-  <div class="nav"><div class="dots" id="dots"></div></div>
   <div class="swipe-guide" id="swipeGuide" hidden aria-live="polite">
-    <button class="slide-continue" id="slideContinue" type="button">Next</button>
+    <button class="slide-continue" id="slideContinue" type="button">Continue →</button>
   </div>
   <img class="sg sg1" alt="" hidden>
   <img class="sg sg2" alt="" hidden>
@@ -396,10 +396,10 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
 
 <!-- 3 การ์ดข้อความ -->
 <div class="modal" id="m-card">
-  <div class="card">
+  <div class="card is-deck">
     <div class="card-deck" id="cardDeck">
       <div class="card-stack" id="cardStack"></div>
-      <button id="cardNext" type="button" hidden>Next</button>
+      <button id="cardNext" type="button" hidden>Continue →</button>
     </div>
     <div class="card-reader" id="cardReader" hidden>
       <img class="card-gif" id="cardGif" src="gif/Cat%20Love%20Sticker%20by%20ACHTUNG.gif" alt="" hidden>
@@ -426,11 +426,12 @@ button:focus-visible,textarea:focus-visible{outline:3px solid #fff;outline-offse
   <div id="form">
     <p class="q fade">
       ตั้งแต่วันแรกที่เราได้รู้จักกันจนถึงวันนี้<br>
-      พี่รู้สึกยังไงบ้างครับ?<br>
-      ความรู้สึกที่พี่มีต่อผมมันดีขึ้นเรื่อยๆ หรือมีอะไรเปลี่ยนไปบ้างไหมครับ<br>
-      แล้วมีอะไรที่พี่อยากบอกผมไหมครับ?
+      พี่รู้สึกยังไงกับความสัมพันธ์ของเราบ้างครับ?<br>
+      มีอะไรเปลี่ยนแปลงไปในความรู้สึกของพี่บ้างไหม<br>
+      หรือมีเรื่องอะไรเกี่ยวกับเราที่พี่ได้เรียนรู้หรือรู้สึกมาตลอดช่วงเวลาที่ผ่านมาไหมครับ?<br>
+      แล้วมีอะไรที่พี่อยากบอกผม หรืออยากให้ผมรับรู้บ้างไหมครับ?
     </p>
-    <div class="answer-row">
+      <div class="answer-row">
       <div class="answer-input">
         <textarea id="ans" placeholder="พิมพ์คำตอบตรงนี้ได้เลย" aria-label="คำตอบ"></textarea>
         <div class="answer-actions">
@@ -500,7 +501,7 @@ const CONFIG = {
 };
 // 2) ใส่รูปไว้ในโฟลเดอร์ img/ และข้อความประกอบรูปตามลำดับ
 const PHOTOS = [
-  ["img/ข้อความแรก.jpg"],["img/1.jpg"],["img/2.jpg"],["img/ขอคุย.jpg"],["img/3.jpg"],["img/4.jpg"],["img/5.jpg"],["img/6.jpg"],["img/7.jpg"]
+  ["img/ข้อความแรก.webp"],["img/1.webp"],["img/2.webp"],["img/ขอคุย.webp"],["img/3.webp"],["img/4.webp"],["img/5.webp"],["img/6.webp"],["img/7.webp"]
 ];
 const SLIDE_TEXTS = [
   "ทักครั้งแรก\n2025-09-13",
@@ -696,8 +697,6 @@ document.querySelectorAll('.sg').forEach((img, i) => {
 /* ===== สไลด์ (ข้อความซ้าย รูปขวา พลิกหน้า) ===== */
 let sp = 0, flipping = false, canContinueFromSlides = false;
 const SPREADS = PHOTOS.length;
-const dots = $('dots');
-for (let i = 0; i < SPREADS; i++) dots.appendChild(document.createElement('i'));
 const pL = $('pgL'), pR = $('pgR'), flip = $('flip'), fF = $('flipF'), fB = $('flipB');
 
 function setPage(el, i, side){
@@ -721,7 +720,6 @@ function setPage(el, i, side){
 function paint(){
   setPage(pL, sp, 'text');
   setPage(pR, sp, 'image');
-  [...dots.children].forEach((d, i) => d.classList.toggle('on', i === sp));
   if (sp === SPREADS - 1) canContinueFromSlides = true;
   $('swipeGuide').hidden = !canContinueFromSlides;
 }
@@ -858,6 +856,7 @@ function openCard(index){
   const message = $('cardMessage');
   message.textContent = CARD_MESSAGES[index];
   requestAnimationFrame(() => { message.scrollTop = 0; });
+  $('m-card').querySelector('.card').classList.remove('is-deck');
   $('cardDeck').hidden = true;
   const reader = $('cardReader');
   reader.hidden = false;
@@ -890,6 +889,7 @@ function closeCard(){
   $('cardReader').hidden = true;
   $('cardReader').classList.remove('is-flipping');
   $('cardDeck').hidden = false;
+  $('m-card').querySelector('.card').classList.add('is-deck');
 }
 function finishCards(){
   if (readCards.size !== CARD_MESSAGES.length) return;
@@ -901,6 +901,7 @@ $('cardNext').addEventListener('click', finishCards);
 function showCard(){
   $('cardReader').hidden = true;
   $('cardDeck').hidden = false;
+  $('m-card').querySelector('.card').classList.add('is-deck');
   updateDeckProgress();
   $('m-card').classList.add('on');
 }
